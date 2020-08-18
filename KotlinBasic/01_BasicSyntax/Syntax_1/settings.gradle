@@ -1,0 +1,2 @@
+rootProject.name='Syntax_1'
+include ':app'
