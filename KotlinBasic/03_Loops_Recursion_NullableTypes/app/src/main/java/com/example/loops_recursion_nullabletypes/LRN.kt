@@ -44,7 +44,7 @@ fun printPositiveNumbersAndSumNumbers(){
     println("количество введенных положительных чисел = $countPositiveNumbers")
     println("сумма всех введенных чисел  = $sum")
 }
-fun gCD(a: Int, b: Int): Int? {
+tailrec fun gCD(a: Int, b: Int): Int? {
 
     return if (b == 0){
        a
