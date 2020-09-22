@@ -4,10 +4,9 @@ fun main() {
 
     println(inputInt())
     printPositiveNumbersAndSumNumbers()
-    println("Введите два числа для функции gCD - вычисления НОД =>")
-    val a = readLine()?.toIntOrNull() ?: return
-    val b = readLine()?.toIntOrNull() ?: return
-    println(gCD(a, b))
+
+
+
 
 }
 
@@ -52,10 +51,12 @@ fun printPositiveNumbersAndSumNumbers(){
 
     println("количество введенных положительных чисел = $countPositiveNumbers")
     println("сумма всех введенных чисел  = $sum")
+
+    println("Введите число для функции gCD - вычисления НОД =>")
+    val b = readLine()?.toIntOrNull() ?: return
+    println(gCD(sum, b))
 }
 tailrec fun gCD(a: Int, b: Int): Int {
-    val sum = a + b
-    println("сумма введенных чисел = $sum")
     return if (b == 0){
        a
     } else gCD(b, a % b)
