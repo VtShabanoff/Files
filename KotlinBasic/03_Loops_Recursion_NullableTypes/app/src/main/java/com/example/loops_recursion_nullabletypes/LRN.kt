@@ -2,11 +2,9 @@ package com.example.loops_recursion_nullabletypes
 
 fun main() {
 
-    println(inputInt())
-    printPositiveNumbersAndSumNumbers()
-
-
-
+    //println(inputInt())
+    //printPositiveNumbersAndSumNumbers()
+    
 
 }
 
