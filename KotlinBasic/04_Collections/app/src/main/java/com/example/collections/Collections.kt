@@ -1,8 +1,10 @@
 package com.example.collections
 
+import java.lang.Exception
+
 fun main() {
 
-    val filterListNumbers = enterPhoneNumber(5).filter { it.startsWith("+7") }
+    val filterListNumbers = enterPhoneNumber().filter { it.startsWith("+7") }
     filterListNumbers.forEach { println("Список номеров начинающихся с +7 => $it") }
     val setNumbers = filterListNumbers.toSet()
     setNumbers.forEach { println("список уникальных номеров => $it") }
@@ -13,13 +15,19 @@ fun main() {
     }
 
 }
-fun enterPhoneNumber(count: Int = 0): List<String> {
+fun enterPhoneNumber(): List<String> {
+    println("Введите число")
+    val count = readLine()?.toIntOrNull()
     val listNumbers = mutableListOf<String>()
+    if (count != null) {
     println("Введите номер телефона")
-    while (listNumbers.size < count) {
-        val line = readLine().toString()
-        listNumbers.add(line)
-    }
+            while (listNumbers.size < count) {
+                val line = readLine().toString()
+                listNumbers.add(line)
+            }
+        } else {
+        println("Вы ввели не число")
+        }
     return listNumbers
 }
 
