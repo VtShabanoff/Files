@@ -1,28 +1,43 @@
 package main
 
+import `interface`.SoundAble
+import classes.Bird
+import classes.Dog
+import classes.Fish
+import classes.Zoo
 import parent_classes.Animal
+import kotlin.random.Random
 
 fun main() {
-    var animal = Animal(1, 2, "Шарик", 15)
+    val zoo = Zoo()
+    val listNewChild = mutableListOf<Animal>()
+    println("Введите количество циклов жизни животных")
+    val read = readLine()?.toIntOrNull() ?: return
+    for(i in 1 .. read) {
 
-    while (true){
-        with(animal){
-            while (true){
-                if (isOld){
-                    println("Животное слишком старое")
-                    println("Вес = $weight Энергия = $energy Возраст = $age")
-
-                    break
+        zoo.listZoo.forEach {
+            when(Random.nextInt(if (it is SoundAble) 5 else 4)){
+                0 -> it.eat()
+                1 -> it.move()
+                2 -> it.sleep()
+                3 -> it.makeChild()
+                4 -> if (it is SoundAble){
+                    it.makeSound()
                 }
-                eat()
-                sleep()
-                move()
             }
 
+            listNewChild.add(it.makeChild())
         }
-        animal = animal.makeChild()
-
+        zoo.listZoo.removeAll{it.isTooOld}
+        if (zoo.listZoo.isEmpty()){
+            println("Зоопарк пуст!")
+            break
+        }
     }
+
+        zoo.listZoo.addAll(listNewChild)
+        println("Окончательный список животных в зоопарке")
+        zoo.listZoo.forEach { println(it.name) }
 
 
 }

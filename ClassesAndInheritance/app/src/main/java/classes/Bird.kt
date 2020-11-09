@@ -1,16 +1,22 @@
 package classes
 
-import parent_classes.AgeAnimal
+import `interface`.SoundAble
 import parent_classes.Animal
 
-class Bird(energy: Int, weight: Int, name: String, maxAge: Int) : Animal(energy, weight, name, maxAge) {
+class Bird(weight: Int, name: String, energy: Int, override val maxAge: Int) : Animal(weight, name, energy)
+, SoundAble{
+
     override fun move() {
         super.move()
         println("$name летит")
     }
 
     override fun makeChild(): Bird {
-        super.makeChild()
-        return Bird(energy, weight, name, maxAge)
+        val child = super.makeChild()
+        return Bird(child.weight, child.name, child.energy, child.maxAge)
+    }
+
+    override fun makeSound() {
+        println("$name Чирик-Чирик.....")
     }
 }

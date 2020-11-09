@@ -2,14 +2,15 @@ package classes
 
 import parent_classes.Animal
 
-class Fish(energy: Int, weight: Int, name: String, maxAge: Int) : Animal(energy, weight, name, maxAge) {
+class Fish(weight: Int, name: String, energy: Int, override val maxAge: Int) : Animal(weight, name, energy) {
+
     override fun move() {
         super.move()
         println("$name плывет")
     }
 
     override fun makeChild(): Fish {
-        super.makeChild()
-        return Fish(energy, weight, name, maxAge)
+        val child = super.makeChild()
+        return Fish(child.weight, child.name, child.energy, child.maxAge)
     }
 }

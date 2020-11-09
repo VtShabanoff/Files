@@ -1,4 +1,5 @@
 package parent_classes
 
-abstract class AgeAnimal(val maxAge: Int) {
+abstract class AgeAnimal() {
+    abstract val maxAge: Int
 }
