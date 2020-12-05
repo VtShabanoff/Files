@@ -26,8 +26,6 @@ abstract class Animal(
 
     val isTooOld: Boolean
         get() = age >= maxAge
-    /*val isOld: Boolean
-        get() = isTooOld || weight <= 0 || energy <= 0*/
 
     fun sleep(){
         if (isTooOld) return
