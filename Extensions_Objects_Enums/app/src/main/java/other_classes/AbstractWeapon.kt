@@ -7,7 +7,7 @@ abstract class AbstractWeapon(
         private val fireType: FireType,
 ) {
 
-    var listRounds: List<Ammo> = listOf()
+    private var listRounds: List<Ammo> = listOf()
     val isAvailabilityOfRounds: Boolean
         get() = listRounds.isNotEmpty()
 

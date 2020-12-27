@@ -21,6 +21,11 @@ enum class Ammo(
         strike = 20,
         criticalStrikeChance = 35,
         criticalStrikeRatio = 45
+    ),
+    MACHINE_GUN(
+        strike = 15,
+        criticalStrikeChance = 28,
+        criticalStrikeRatio = 35
     );
 
     fun getDamage(): Int {
