@@ -15,9 +15,9 @@ class Battle(private val teamOne: Team, private val teamTwo: Team) {
 
     fun getBattleState(): BattleState{
         return when{
+            teamOneIsKilled && teamTwoIsKilled -> BattleState.Draw()
             teamOneIsKilled -> BattleState.TeamTwoWin()
             teamTwoIsKilled -> BattleState.TeamOneWin()
-            teamOneIsKilled && teamTwoIsKilled -> BattleState.Draw()
             else -> BattleState.Progress(teamOne, teamTwo)
         }
     }

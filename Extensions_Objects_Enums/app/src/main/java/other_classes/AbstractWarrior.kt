@@ -26,10 +26,7 @@ abstract class AbstractWarrior(
         if (!weapon.isAvailabilityOfRounds){
             weapon.reloadingWeapons()
             return
-        }else{
-            weapon.getRoundsForShot()
         }
-
         val sumDamage = weapon.getRoundsForShot().filter { accuracy.isChance() && !enemy.chanceToAvoidDeath.isChance() }
                 .sumBy { it.getDamage() }
 
