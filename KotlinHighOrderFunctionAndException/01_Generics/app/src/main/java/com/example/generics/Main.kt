@@ -1,7 +1,7 @@
 package com.example.generics
 
 fun main(){
-    val list = listOf(20, 30, 77)
+    val list = listOf(20, 30, 77, 8.0)
 
     filterEven(list).forEach { println(it) }
 }
