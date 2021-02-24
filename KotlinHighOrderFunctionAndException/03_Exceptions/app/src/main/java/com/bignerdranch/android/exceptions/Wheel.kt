@@ -6,7 +6,7 @@ class Wheel {
 
     fun setPressure(value: Double) {
         when  {
-            value > 10.0 || value < 0.0 -> IncorrectPressure()
+            value > 10.0 || value < 0.0 -> throw IncorrectPressure()
         }
     }
 
