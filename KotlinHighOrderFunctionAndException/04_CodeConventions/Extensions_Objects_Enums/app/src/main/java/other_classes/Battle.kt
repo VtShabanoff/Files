@@ -12,7 +12,6 @@ class Battle(private val teamOne: Team, private val teamTwo: Team) {
     val isBattleFinish: Boolean
         get() = teamOneIsKilled || teamTwoIsKilled
 
-
     fun getBattleState(): BattleState {
         return when {
             teamOneIsKilled && teamTwoIsKilled -> BattleState.Draw()

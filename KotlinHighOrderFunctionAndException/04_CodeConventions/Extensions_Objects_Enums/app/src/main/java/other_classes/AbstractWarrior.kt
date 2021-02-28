@@ -5,8 +5,8 @@ import enums.isChance
 
 abstract class AbstractWarrior(
     maxHealth: Int,
-    override val chanceToAvoidDeath: Int,// шанс избежать попадания
-    private val accuracy: Int,//точность война
+    override val chanceToAvoidDeath: Int, // шанс избежать попадания
+    private val accuracy: Int, // точность война
     private val weapon: AbstractWeapon
 ) : Warrior {
 

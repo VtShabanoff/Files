@@ -9,7 +9,6 @@ sealed class BattleState {
         override fun toString(): String {
             return "Progress(teamOneSumHealth=$teamOneSumHealth, teamTwoSumHealth=$teamTwoSumHealth)"
         }
-
     }
 
     class TeamOneWin : BattleState() {
@@ -41,6 +40,4 @@ sealed class BattleState {
             return System.identityHashCode(this)
         }
     }
-
-
 }

@@ -14,6 +14,4 @@ fun main() {
         battle.stepOfBattle()
         println(battle.getBattleState())
     }
-
-
 }
