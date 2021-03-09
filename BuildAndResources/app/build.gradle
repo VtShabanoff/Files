@@ -29,6 +29,7 @@ android {
             manifestPlaceholders = [appName: "DebugApp"]
         }
         qa {
+            initWith debug
             applicationIdSuffix ".qa"
             manifestPlaceholders = [appName: "QaApp"]
         }
@@ -38,15 +39,17 @@ android {
 
     productFlavors{
         free{
+            versionCode = android.defaultConfig.versionCode + 100
             dimension "version"
             applicationIdSuffix ".free"
-            versionNameSuffix "Free"
+            versionNameSuffix " Free"
         }
 
         paid{
+            versionCode = android.defaultConfig.versionCode + 1000
             dimension "version"
             applicationIdSuffix ".paid"
-            versionNameSuffix "Paid"
+            versionNameSuffix " Paid"
         }
     }
     compileOptions {
