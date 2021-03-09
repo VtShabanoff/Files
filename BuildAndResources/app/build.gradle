@@ -22,16 +22,19 @@ android {
             manifestPlaceholders = [appName: "ReleaseApp"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "App"
         }
 
         debug {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [appName: "DebugApp"]
+            resValue "string", "app_name", "App (debug)"
         }
         qa {
             initWith debug
             applicationIdSuffix ".qa"
             manifestPlaceholders = [appName: "QaApp"]
+            resValue "string", "app_name", "App (qa)"
         }
     }
 
@@ -42,14 +45,14 @@ android {
             versionCode = android.defaultConfig.versionCode + 100
             dimension "version"
             applicationIdSuffix ".free"
-            versionNameSuffix " Free"
+            versionNameSuffix "-free"
         }
 
         paid{
             versionCode = android.defaultConfig.versionCode + 1000
             dimension "version"
             applicationIdSuffix ".paid"
-            versionNameSuffix " Paid"
+            versionNameSuffix "-paid"
         }
     }
     compileOptions {
