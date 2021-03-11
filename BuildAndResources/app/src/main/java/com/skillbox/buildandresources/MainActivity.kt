@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         val landLayout = findViewById<ConstraintLayout>(R.id.landLayout)
 
 
+
         textView.text = """"
+            Name = ${getString(R.string.app_names)}
             Build type = ${BuildConfig.BUILD_TYPE}
             Flavor = ${BuildConfig.FLAVOR}
             Version code = ${BuildConfig.VERSION_CODE}
