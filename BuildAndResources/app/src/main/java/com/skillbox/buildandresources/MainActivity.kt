@@ -16,17 +16,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
 
-    @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val textView = findViewById<TextView>(R.id.textView)
-        val firstLayout = findViewById<ConstraintLayout>(R.id.firstLayout)
-        val landLayout = findViewById<ConstraintLayout>(R.id.landLayout)
-
-
-
         textView.text = """"
             Name = ${getString(R.string.app_names)}
             Build type = ${BuildConfig.BUILD_TYPE}
@@ -36,9 +30,6 @@ class MainActivity : AppCompatActivity() {
             Version name = ${BuildConfig.VERSION_NAME}
             Application Id = ${BuildConfig.APPLICATION_ID}
         """"
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            landLayout.setBackgroundColor(resources.getColor(R.color.color_for_second_activity))
-            textView.setBackgroundColor(resources.getColor(R.color.color_for_second_activity))
-        }
+
     }
 }
