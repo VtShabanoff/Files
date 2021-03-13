@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ViewAndLayout</string>
+    <string name="input_email">Введите email</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="check_box_terms_of_use">Принять пользовательское соглашение</string>
+    <string name="log_in_button">Зарегистрироваться</string>
+</resources>
