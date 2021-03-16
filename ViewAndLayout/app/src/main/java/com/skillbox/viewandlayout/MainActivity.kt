@@ -24,23 +24,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun onButtonEnabled(){
         inputEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                logInButton.isEnabled = false
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0?.isNotBlank() == true
                     && inputPassword.text.isNotBlank() && checkboxTermsOfUse.isChecked)
                     logInButton.isEnabled = true
             }
+            override fun afterTextChanged(p0: Editable?) {}
         })
 
         inputPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                logInButton.isEnabled = false
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0?.isNotBlank() == true
                     && inputEmail.text.isNotBlank() && checkboxTermsOfUse.isChecked)
                     logInButton.isEnabled = true
             }
+            override fun afterTextChanged(p0: Editable?) {}
         })
 
         checkboxTermsOfUse.setOnCheckedChangeListener { _, _ ->
@@ -56,8 +60,6 @@ class MainActivity : AppCompatActivity() {
             progressBarTerms.visibility = View.VISIBLE
             logInButton.isEnabled = false
             textView.text = ""
-
-
 
             Handler().postDelayed({
                 inputPassword.isEnabled = true
