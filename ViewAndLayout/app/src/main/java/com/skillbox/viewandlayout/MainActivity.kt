@@ -14,39 +14,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        onButtonEnabled()
+        setListenerForControlButton()
 
         logInButton.setOnClickListener {
             userRegistration()
         }
 
     }
+    private fun buttonEnable(p0: CharSequence?){
+        logInButton.isEnabled = (p0?.isNotBlank() == true
+                && inputPassword.text.isNotBlank() && inputEmail.text.isNotBlank()
+                && checkboxTermsOfUse.isChecked)
+    }
 
-    private fun onButtonEnabled(){
-        inputEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                logInButton.isEnabled = false
-            }
+    private fun setListenerForControlButton(){
+        val buttonEnabled = object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0?.isNotBlank() == true
-                    && inputPassword.text.isNotBlank() && checkboxTermsOfUse.isChecked)
-                    logInButton.isEnabled = true
+                buttonEnable(p0)
             }
             override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        inputPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                logInButton.isEnabled = false
-            }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0?.isNotBlank() == true
-                    && inputEmail.text.isNotBlank() && checkboxTermsOfUse.isChecked)
-                    logInButton.isEnabled = true
-            }
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
+        }
+        inputEmail.addTextChangedListener(buttonEnabled)
+        inputPassword.addTextChangedListener(buttonEnabled)
         checkboxTermsOfUse.setOnCheckedChangeListener { _, _ ->
             logInButton.isEnabled = inputEmail.text.isNotBlank() && inputPassword.text.isNotBlank()
                     && checkboxTermsOfUse.isChecked
