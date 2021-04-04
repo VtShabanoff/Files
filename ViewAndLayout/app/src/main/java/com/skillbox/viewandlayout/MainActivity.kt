@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     private fun buttonEnable(p0: CharSequence?){
         logInButton.isEnabled = (p0?.isNotBlank() == true
                 && inputPassword.text.isNotBlank() && inputEmail.text.isNotBlank()
@@ -28,7 +29,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setListenerForControlButton(){
-        val buttonEnabled = object : TextWatcher{
+        val buttonEnabled =
+            object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 buttonEnable(p0)
