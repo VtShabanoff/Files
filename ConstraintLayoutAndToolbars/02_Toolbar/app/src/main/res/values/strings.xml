@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MY FOOD</string>
+    <string name="text_for_food">My kitchen is not very big but there is enough place for all things we need for cooking. There is a fridge with a freezer, a gas cooker, an electric oven, and a dishwasher. There are cupboards on the walls and tables with drawers. We place there our cookware: pans, pots and casseroles. Under the window, we have a big sink and a tap. When we wash dishes, we look out of the window and enjoy the beautiful view. You can see lots of modern devices for preparing food. They are a kettle, a food processor, a toaster and a microwave. Of course, we have lots of cutlers too. My mother likes cooking and she always cooks something tasty for all our family. All my family likes her cooking. Especially we like her tomato soup, a pizza, and cakes. I can cook too. I like making sandwiches, salads, and fried chicken. I can tell a lot more about my kitchen and cooking, but I am going to do it in another topic.</string>
+    <string name="fish_dish_text_view">Today we are presenting a tasty selection of Russian fish dishes. Fish has always been eaten in a variety of kinds: steamed, boiled, telnaya (i.e. made of fillet alone boned but not skinned), fried, stuffed (with porridge, onions and mushrooms), stewed, jellied, roasted in scales, fried in sour cream, salted, wind-dried, sun-dried (vobla) or stove-dried (suschik). In north-eastern Russia fish was soured (sour fish), in western Siberia it was raw-frozen (stroganina). Smoked fish was less spread in Russian national cuisine until mid 19th century, but these days it is, on the contrary, is very popular in three kinds – cold-smoked, hot-smoked and smoke-dried.</string>
+
+
+    <string name="layout_based">Layout based</string>
+    <string name="dish_1">Fish Dish</string>
+    <string name="dish_2">Dish 2</string>
+    <string name="dish_3">Dish 3</string>
+    <string name="dish_4">Dish 4</string>
+    <string name="icon_menu">icon</string>
+    <string name="search_menu">search</string>
+
+
+</resources>

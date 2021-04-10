@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemSearch"
+        android:title="@string/search_menu"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="@drawable/ic_search"/>
+
+    <item android:icon="@drawable/ic__dining"
+        android:title="@string/icon_menu"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/itemMenuFishDish"
+        android:title="@string/dish_1"/>
+
+    <item
+        android:id="@+id/dish_2"
+        android:title="@string/dish_2"/>
+    <item
+        android:id="@+id/dish_3"
+        android:title="@string/dish_3"/>
+    <item
+        android:id="@+id/dish_4"
+        android:title="@string/dish_4"/>
+
+</menu>
