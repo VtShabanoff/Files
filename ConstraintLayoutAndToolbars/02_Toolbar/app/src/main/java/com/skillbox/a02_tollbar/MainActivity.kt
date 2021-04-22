@@ -3,6 +3,7 @@ package com.skillbox.a02_tollbar
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -10,12 +11,17 @@ import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private val tag = "MainActivity"
+    private val message = "onDestroy"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         onClickItemsMenu()
         itemSearchMenu()
+
+
 
 
     }
@@ -77,6 +83,19 @@ class MainActivity : AppCompatActivity() {
         )
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DebugLogger.d(tag, message)
+    }
+
+    object DebugLogger{
+        fun d(tag: String, message: String){
+            if (BuildConfig.DEBUG){
+                Log.d(tag, message)
+            }
+        }
     }
 
 }

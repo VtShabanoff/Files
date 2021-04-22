@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">01_ConstraintLayout</string>
+    <string name="edit_text_email">Введите email</string>
+    <string name="edit_text_password">Введите пароль</string>
+    <string name="button_login">Зарегистрироваться</string>
+    <string name="check_box_custom_message">Принять пользовательское соглашение</string>
+</resources>
