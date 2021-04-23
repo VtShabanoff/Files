@@ -1,38 +1,45 @@
 package com.skillbox.a01_constraintlayout
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
 
-
+    private val logger = Logger()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val logger = Logger()
         logger.assert("On Create")
         logger.verbose("On Create")
         logger.info("On Create")
         logger.debug("On Create")
         logger.error("On Create")
 
-
+        buttonLogin.isEnabled = false
         setListenerForControlButton()
         buttonLogin.setOnClickListener {
             userRegistration()
         }
 
+        buttonAnr.setOnClickListener {
+            Thread.sleep(10000)
+        }
+    }
 
+    private fun isEmailValid(email: String): Boolean{
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     override fun onStart() {
-        val logger = Logger()
         super.onStart()
         logger.assert("On Start")
         logger.verbose("On Start")
@@ -42,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        val logger = Logger()
         super.onResume()
         logger.assert("On Resume")
         logger.verbose("On Resume")
@@ -52,7 +58,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        val logger = Logger()
         super.onPause()
         logger.assert("On Pause")
         logger.verbose("On Pause")
@@ -62,7 +67,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        val logger = Logger()
         super.onStop()
         logger.assert("On Stop")
         logger.verbose("On Stop")
@@ -72,7 +76,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        val logger = Logger()
         super.onDestroy()
         logger.assert("On Destroy")
         logger.verbose("On Destroy")
@@ -106,13 +109,19 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+
     private fun userRegistration(){
+
+        if (!isEmailValid(editTextEmailAddress.text.toString())) {
+        textViewMessage.text = "email address entered incorrect"
+        return
+        }
         editTextPassword.isEnabled = false
         editTextEmailAddress.isEnabled = false
         checkBoxCustomMessage.isChecked = false
         progressBar.visibility = View.VISIBLE
         buttonLogin.isEnabled = false
-        textViewMessage.text = ""
+        textViewMessage.text = "Введен логин, введен пароль"
 
         Handler().postDelayed({
             editTextPassword.isEnabled = true
