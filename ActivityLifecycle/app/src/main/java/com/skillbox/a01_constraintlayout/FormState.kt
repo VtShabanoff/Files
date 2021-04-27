@@ -5,10 +5,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class FormState(var valid: Boolean, val message: String):Parcelable {
+data class FormState(var valid: Boolean, var message: String):Parcelable {
 
-    fun displayMessageErrorEmailAddress(): FormState{
-        return copy(message = "Некорректная форма email адреса")
-    }
 
 }

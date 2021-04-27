@@ -1,23 +1,19 @@
 package com.skillbox.a01_constraintlayout
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
     companion object{
         const val KEY_MESSAGE_ERROR = "keyMessageError"
     }
-    private var formState = FormState(true, "")
+    private var formState = FormState(true, "некорректный email")
 
     private val logger = Logger()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         }
         if (savedInstanceState != null){
             formState = savedInstanceState.getParcelable(KEY_MESSAGE_ERROR) ?: error("error")
+            textViewMessage.text = formState.message
+            buttonLogin.isEnabled = formState.valid
+
         }
     }
 
@@ -122,8 +121,11 @@ class MainActivity : AppCompatActivity() {
 
         if (!isEmailValid(editTextEmailAddress.text.toString())) {
             textViewMessage.text = formState.message
-        return
+            formState.valid = false
+            buttonLogin.isEnabled = formState.valid
+            return
         }
+
         editTextPassword.isEnabled = false
         editTextEmailAddress.isEnabled = false
         checkBoxCustomMessage.isChecked = false
@@ -146,7 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-            outState.putParcelable(KEY_MESSAGE_ERROR, formState)
+        outState.putParcelable(KEY_MESSAGE_ERROR, formState)
     }
 
 }
