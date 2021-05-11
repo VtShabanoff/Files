@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
         const val KEY_MESSAGE_ERROR = "keyMessageError"
     }
     private var formState = FormState(true, "некорректный email")
-
     private val logger = Logger()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,15 +34,17 @@ class MainActivity : AppCompatActivity() {
         buttonAnr.setOnClickListener {
             Thread.sleep(10000)
         }
-        if (savedInstanceState != null){
-            formState = savedInstanceState.getParcelable(KEY_MESSAGE_ERROR) ?: error("error")
-            textViewMessage.text = formState.message
-            buttonLogin.isEnabled = formState.valid
 
-        }
     }
 
-    private fun isEmailValid(email: String): Boolean{
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        formState = savedInstanceState.getParcelable(KEY_MESSAGE_ERROR) ?: error("error")
+        textViewMessage.text = formState.message
+        buttonLogin.isEnabled = formState.valid
+    }
+
+        private fun isEmailValid(email: String): Boolean{
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
@@ -115,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                         checkBoxCustomMessage.isChecked
             }
     }
-
 
     private fun userRegistration(){
 
