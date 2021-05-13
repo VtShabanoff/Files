@@ -27,7 +27,7 @@ class SecondActivity : AppCompatActivity() {
         val intentDial = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${editTextPhone.text}"))
         if (intentDial.resolveActivity(packageManager) != null){
             if (isNumberPhoneCorrect) {
-                startActivityForResult(intentDial, REQUEST_CODE_SECOND_ACTIVITY)
+                startActivity(intentDial)
             } else{
                 toast("Введите корректный номер телефона")
             }
