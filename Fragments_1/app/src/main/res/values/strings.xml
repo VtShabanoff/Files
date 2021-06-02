@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Fragments</string>
+    <string name="log_in_button">Log in</string>
+    <string name="hint_email_address_for_edit_text">Enter your email address</string>
+    <string name="hint_your_password_for_edit_text">Enter your password</string>
+    <string name="user_agreement_checkbox">User Agreement</string>
+</resources>

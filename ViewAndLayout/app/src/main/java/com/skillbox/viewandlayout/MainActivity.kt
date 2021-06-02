@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             logInButton.isEnabled = false
             textView.text = ""
 
-            Handler().postDelayed({
+            Handler(mainLooper).postDelayed({
                 inputPassword.isEnabled = true
                 inputPassword.setText("")
                 inputEmail.isEnabled = true
