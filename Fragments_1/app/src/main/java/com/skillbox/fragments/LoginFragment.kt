@@ -18,7 +18,10 @@ class LoginFragment: Fragment() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var progressBarLoginFragment: ProgressBar
-    var formState = FormState(true, "")
+    var textForm = ""
+    var isValid = true
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +31,6 @@ class LoginFragment: Fragment() {
        val view = inflater.inflate(R.layout.fragment_login, container, false)
         loginButton = view.findViewById(R.id.buttonLogin)
         checkBoxUserAgreement = view.findViewById(R.id.checkboxLogin)
-        //textViewLoginFragment = view.findViewById(R.id.textViewLogin)
         editTextEmail = view.findViewById(R.id.emailAddressEditText)
         editTextPassword = view.findViewById(R.id.passwordEditText)
         progressBarLoginFragment = view.findViewById(R.id.progressBarLogin)
@@ -40,12 +42,20 @@ class LoginFragment: Fragment() {
         return view
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_FORM_STATE, textForm)
+        outState.putBoolean(KEY_IS_VALID, isValid)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         textViewLoginFragment = requireView().findViewById(R.id.textViewLogin)
-        formState = requireArguments().getParcelable(KEY_FORM_STATE) ?: error("")
-        textViewLoginFragment.text = formState.message
-        loginButton.isEnabled = formState.valid
+            if (savedInstanceState != null){
+                textViewLoginFragment.text = savedInstanceState.getString(KEY_FORM_STATE)
+                loginButton.isEnabled = savedInstanceState.getBoolean(KEY_IS_VALID)
+        }
+
     }
 
     override fun onStart() {
@@ -93,10 +103,10 @@ class LoginFragment: Fragment() {
 
     private fun registrationUser(){
         if (!emailValid(editTextEmail.text.toString())){
-            formState.message = "Некорректный email адрес"
-            textViewLoginFragment.text = formState.message
-            formState.valid = false
-            loginButton.isEnabled = formState.valid
+            textForm = "Некорректный email адрес"
+            textViewLoginFragment.text = textForm
+            isValid = false
+            loginButton.isEnabled = isValid
             return
         }
 
@@ -113,8 +123,8 @@ class LoginFragment: Fragment() {
             checkBoxUserAgreement.visibility = View.VISIBLE
             progressBarLoginFragment.visibility = View.GONE
             loginButton.isEnabled = true
-            formState.message = "Регистрация прошла успешно"
-            textViewLoginFragment.text = formState.message
+            textForm = "Регистрация прошла успешно"
+            textViewLoginFragment.text = textForm
             showMainFragment()
         }, 4000)
     }
@@ -124,15 +134,9 @@ class LoginFragment: Fragment() {
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.loginFragmentContainer, mainFragment)
             ?.commit()
-
     }
     companion object{
-        private const val KEY_FORM_STATE = "key_form_state_for_transaction_to_phone_number_call_fragment"
-
-        fun newInstance(formState: FormState): LoginFragment{
-            return LoginFragment().withArguments {
-                putParcelable(KEY_FORM_STATE, formState)
-            }
-        }
+        private const val KEY_FORM_STATE = "key_form_text"
+        private const val KEY_IS_VALID = "key_is_valid"
     }
 }

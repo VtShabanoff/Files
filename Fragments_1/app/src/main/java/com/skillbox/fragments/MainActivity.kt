@@ -9,16 +9,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showLoginFragment()
+        savedInstanceState ?: showLoginFragment()
     }
 
     private fun showLoginFragment(){
         val loginFragment =
             supportFragmentManager.findFragmentById(R.id.loginFragmentContainer)
         if (loginFragment == null){
-            val logFragment = LoginFragment.newInstance(LoginFragment().formState)
             supportFragmentManager.beginTransaction()
-                .add(R.id.loginFragmentContainer, logFragment)
+                .add(R.id.loginFragmentContainer, LoginFragment())
                 .commit()
         }
     }
