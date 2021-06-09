@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-class MainFragment: Fragment(R.layout.fragment_main) {
+class MainFragment: Fragment(R.layout.fragment_main), ItemSelectListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,9 +22,17 @@ class MainFragment: Fragment(R.layout.fragment_main) {
     }
 
     private fun showListFragment(){
-        val listFt = ListFragment()
         childFragmentManager.beginTransaction()
-            .replace(R.id.mainFragmentParent, listFt)
+            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+            .replace(R.id.mainFragmentParent, ListFragment())
+            .commit()
+    }
+
+    override fun onItemSelected() {
+        childFragmentManager.beginTransaction()
+            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+            .replace(R.id.mainFragmentParent, DetailFragment())
+            .addToBackStack(null)
             .commit()
     }
 

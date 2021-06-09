@@ -13,13 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.ListFragment
 
 class ListFragment: Fragment(R.layout.fragment_list){
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+
+    private val itemSelectListener: ItemSelectListener?
+        get() = parentFragment as ItemSelectListener?
 
     override fun onViewCreated(view1: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view1, savedInstanceState)
@@ -28,11 +24,13 @@ class ListFragment: Fragment(R.layout.fragment_list){
             .children
             .mapNotNull { it as TextView }
             .forEach { textView -> textView.setOnClickListener {
-                Log.d("TAG", "onClickTextView")
+                onTextViewClick()
             } }
     }
 
-
+    private fun onTextViewClick(){
+        itemSelectListener?.onItemSelected()
+    }
 
 
 }

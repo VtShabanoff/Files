@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.loginFragmentContainer)
         if (loginFragment == null){
             supportFragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .add(R.id.loginFragmentContainer, LoginFragment())
                 .commit()
         }
