@@ -8,14 +8,6 @@ import androidx.fragment.app.Fragment
 
 class MainFragment: Fragment(R.layout.fragment_main), ItemSelectListener {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showListFragment()

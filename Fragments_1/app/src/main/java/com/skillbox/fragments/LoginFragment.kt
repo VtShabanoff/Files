@@ -18,6 +18,8 @@ class LoginFragment: Fragment() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var progressBarLoginFragment: ProgressBar
+    val successLogin: SuccessLogin?
+        get() = activity?.let { it as? SuccessLogin }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,16 +124,10 @@ class LoginFragment: Fragment() {
             progressBarLoginFragment.visibility = View.GONE
             loginButton.isEnabled = true
             textViewLoginFragment.text = "Регистрация прошла успешно"
-            showMainFragment()
+            successLogin?.onSuccessLogin()
         }, 4000)
     }
 
-    private fun showMainFragment(){
-        val mainFragment = MainFragment()
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.loginFragmentContainer, mainFragment)
-            ?.commit()
-    }
     companion object{
         private const val KEY_FORM_STATE = "key_form_state"
     }
