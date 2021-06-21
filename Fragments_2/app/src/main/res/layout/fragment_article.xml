@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:padding="8dp"
     android:gravity="center_horizontal"
+    tools:background="@sample/bgColors"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

@@ -13,6 +13,11 @@ class ArticleAdapter(
     }
 
     override fun createFragment(position: Int): Fragment {
-        TODO("Not yet implemented")
+        val article: ArticlesList = articles[position]
+       return ArticleFragment.newInstance(
+            textTitle = article.titleArticle,
+            textArticle = article.textArticle,
+            bgColor = article.bgColor
+        )
     }
 }

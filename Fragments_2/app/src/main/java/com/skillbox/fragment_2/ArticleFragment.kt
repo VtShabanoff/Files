@@ -29,10 +29,9 @@ class ArticleFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireView().setBackgroundResource(requireArguments().getInt(KEY_COLOR))
         textViewTitle.setText(requireArguments().getInt(KEY_TEXT_TITLE))
         textViewArticle.setText(requireArguments().getInt(KEY_TEXT_ARTICLE))
-        textViewTitle.setText(requireArguments().getInt(KEY_TEXT_TITLE))
+        requireView().setBackgroundResource(requireArguments().getInt(KEY_COLOR))
     }
 
     companion object{
