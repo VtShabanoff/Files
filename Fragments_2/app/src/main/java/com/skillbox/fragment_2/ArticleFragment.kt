@@ -1,6 +1,7 @@
 package com.skillbox.fragment_2
 
 import android.os.Bundle
+import android.renderscript.ScriptGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,29 +9,27 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import kotlin.properties.Delegates
+import com.skillbox.fragment_2.databinding.FragmentArticleBinding
 
 class ArticleFragment: Fragment() {
-
-    lateinit var textViewArticle: TextView
-    lateinit var textViewTitle: TextView
+    private var _binding: FragmentArticleBinding? = null
+    private val binding
+        get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_article, container, false)
-        textViewArticle = view.findViewById(R.id.textViewArticle)
-        textViewTitle = view.findViewById(R.id.textViewTitle)
+        _binding = FragmentArticleBinding.inflate(inflater, container, false)
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textViewTitle.setText(requireArguments().getInt(KEY_TEXT_TITLE))
-        textViewArticle.setText(requireArguments().getInt(KEY_TEXT_ARTICLE))
+        binding.textViewTitle.setText(requireArguments().getInt(KEY_TEXT_TITLE))
+        binding.textViewArticle.setText(requireArguments().getInt(KEY_TEXT_ARTICLE))
         requireView().setBackgroundResource(requireArguments().getInt(KEY_COLOR))
     }
 
