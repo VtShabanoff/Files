@@ -1,8 +1,12 @@
 package com.skillbox.fragment_2
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.skillbox.fragment_2.databinding.ActivityMainBinding
 import kotlin.math.abs
@@ -74,14 +78,24 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = ArticleAdapter(listArticles, this)
         binding.viewPager2.adapter = adapter
+
         setZoomOutTransformationViewPager()
+        addTablayout(listArticles)
+        binding.filterButton.setOnClickListener {
+            //addDialog(this)
+            addMultiChoiceItems(this)
+        }
+        binding.backButton.setOnClickListener {
+            binding.viewPager2.adapter = ArticleAdapter(listArticles, this)
+            addTablayout(listArticles)
+        }
+    }
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager2){tab, position ->
-            tab.text = listArticles[position].articleSection.name
+    private fun addTablayout(articles: List<ArticlesList>){
+        TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
+            tab.text = articles[position].articleSection.name
             tab.setIcon(R.drawable.bear)
-
         }.attach()
-
     }
 
     private fun setZoomOutTransformationViewPager(){
@@ -101,4 +115,61 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun addDialog(activity: AppCompatActivity){
+        val arrayArticleSectionNames = arrayOf(
+            ArticleSection.CAT.name,
+            ArticleSection.DOG.name,
+            ArticleSection.BIRD.name,
+        )
+        val dialog = AlertDialog.Builder(activity)
+        with(dialog){
+            setTitle("Выбери группу")
+            setItems(arrayArticleSectionNames) {_, which ->
+                  val filterArticleSection = listArticles.filter {
+                      it.articleSection.name == arrayArticleSectionNames[which]
+                  }
+                    binding.viewPager2.adapter = ArticleAdapter(filterArticleSection, activity)
+                    addTablayout(filterArticleSection)
+                   Toast.makeText(activity, "onClick ${arrayArticleSectionNames[which]}", Toast.LENGTH_SHORT).show()
+                }
+        }.create().show()
+    }
+
+    private fun addMultiChoiceItems(activity: AppCompatActivity){
+
+        val selectedItems = ArrayList<Int>()
+
+        val articleNames = arrayOf(
+            ArticleSection.CAT.name,
+            ArticleSection.DOG.name,
+            ArticleSection.BIRD.name,
+        )
+
+        val dialog = AlertDialog.Builder(activity)
+        dialog.setMultiChoiceItems(articleNames, null) {
+             _, which, isChecked ->
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    selectedItems.add(which)
+                } else if (selectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(which)
+                }
+            }
+            .setPositiveButton("OK"){dialog, id ->
+                val listSorted = ArrayList<ArticlesList>()
+                selectedItems.forEach{itemChecked ->
+                    listArticles.forEach { itemeList ->
+                        if (itemeList.articleSection.name == articleNames[itemChecked]){
+                            listSorted.add(itemeList)
+                        }
+                    }
+                }
+                binding.viewPager2.adapter = ArticleAdapter(listSorted, activity)
+                addTablayout(listSorted)
+            }
+            .create().show()
+    }
+
 }
