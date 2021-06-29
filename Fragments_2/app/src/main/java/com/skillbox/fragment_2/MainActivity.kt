@@ -1,18 +1,14 @@
 package com.skillbox.fragment_2
 
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
+import android.util.Log
 import com.google.android.material.tabs.TabLayoutMediator
 import com.skillbox.fragment_2.databinding.ActivityMainBinding
 import kotlin.math.abs
 import kotlin.math.max
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
     lateinit var binding: ActivityMainBinding
     private val listArticles: List<ArticlesList> = listOf(
         ArticlesList(
@@ -70,25 +66,53 @@ class MainActivity : AppCompatActivity() {
             articleSection = ArticleSection.BIRD
         )
     )
+    lateinit var listSorted: List<ArticlesList>
+    private var sortedListInteger = ArrayList<Int>()
+    private val articleNames = arrayOf(
+        ArticleSection.CAT.name,
+        ArticleSection.DOG.name,
+        ArticleSection.BIRD.name,
+    )
+    private var arrayCheckBoolean = booleanArrayOf(false,false,false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = ArticleAdapter(listArticles, this)
-        binding.viewPager2.adapter = adapter
+            addAdapter(listArticles)
+            setZoomOutTransformationViewPager()
+            addTablayout(listArticles)
 
-        setZoomOutTransformationViewPager()
-        addTablayout(listArticles)
-        binding.filterButton.setOnClickListener {
-            //addDialog(this)
-            addMultiChoiceItems(this)
+         binding.filterButton.setOnClickListener {
+           ArticleDialogFragment.newInstance(sortedListInteger, arrayCheckBoolean).show(supportFragmentManager, "TAG")
         }
-        binding.backButton.setOnClickListener {
-            binding.viewPager2.adapter = ArticleAdapter(listArticles, this)
+           binding.backButton.setOnClickListener {
+            addAdapter(listArticles)
             addTablayout(listArticles)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntegerArrayList(KEY_SORTED_LIST, sortedListInteger)
+        outState.putBooleanArray(KEY_BOOLEAN_ARRAY, arrayCheckBoolean)
+        Log.d("tag", "sortedListInteger в методе onSaveInstanceState = ${sortedListInteger.size}")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.d("tag", "sortedListInteger в методе onRestoreInstanceState = ${sortedListInteger.size}")
+        sortedListInteger =
+            savedInstanceState.getIntegerArrayList(KEY_SORTED_LIST) as ArrayList<Int>
+        arrayCheckBoolean =
+            savedInstanceState.getBooleanArray(KEY_BOOLEAN_ARRAY)!!
+        listSorted = ArrayList()
+        filterArticleListForMultiChoice(sortedListInteger,
+            listSorted as ArrayList<ArticlesList>, articleNames)
+        addAdapter(listSorted)
+        addTablayout(listSorted)
+
     }
 
     private fun addTablayout(articles: List<ArticlesList>){
@@ -96,6 +120,25 @@ class MainActivity : AppCompatActivity() {
             tab.text = articles[position].articleSection.name
             tab.setIcon(R.drawable.bear)
         }.attach()
+    }
+
+    private fun addAdapter(list: List<ArticlesList>){
+        binding.viewPager2.adapter = ArticleAdapter(list, this)
+    }
+
+    private fun filterArticleListForMultiChoice(
+        sortedListInt: List<Int>,
+        sortedList: ArrayList<ArticlesList>,
+        arrayNames: Array<String>,
+    ){
+        sortedListInt.forEach{itemChecked ->
+            listArticles.forEach { itemList ->
+                if (itemList.articleSection.name == arrayNames[itemChecked]){
+                    sortedList.add(itemList)
+                    Log.d("tag", "sortedListInteger в фильтре = ${sortedListInteger.size}")
+                }
+            }
+        }
     }
 
     private fun setZoomOutTransformationViewPager(){
@@ -116,60 +159,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addDialog(activity: AppCompatActivity){
-        val arrayArticleSectionNames = arrayOf(
-            ArticleSection.CAT.name,
-            ArticleSection.DOG.name,
-            ArticleSection.BIRD.name,
-        )
-        val dialog = AlertDialog.Builder(activity)
-        with(dialog){
-            setTitle("Выбери группу")
-            setItems(arrayArticleSectionNames) {_, which ->
-                  val filterArticleSection = listArticles.filter {
-                      it.articleSection.name == arrayArticleSectionNames[which]
-                  }
-                    binding.viewPager2.adapter = ArticleAdapter(filterArticleSection, activity)
-                    addTablayout(filterArticleSection)
-                   Toast.makeText(activity, "onClick ${arrayArticleSectionNames[which]}", Toast.LENGTH_SHORT).show()
-                }
-        }.create().show()
+    override fun onItemMultiChoice(sortedListItem: ArrayList<Int>, checkItemsBoolean: BooleanArray) {
+        sortedListInteger = sortedListItem
+        arrayCheckBoolean = checkItemsBoolean
+
+        listSorted = ArrayList()
+        filterArticleListForMultiChoice(sortedListInteger,
+            listSorted as ArrayList<ArticlesList>, articleNames)
+        addAdapter(listSorted)
+        addTablayout(listSorted)
     }
+    companion object{
+        const val KEY_SORTED_LIST = "key_sorted_list"
+        const val KEY_BOOLEAN_ARRAY = "key_sorted_list"
 
-    private fun addMultiChoiceItems(activity: AppCompatActivity){
-
-        val selectedItems = ArrayList<Int>()
-
-        val articleNames = arrayOf(
-            ArticleSection.CAT.name,
-            ArticleSection.DOG.name,
-            ArticleSection.BIRD.name,
-        )
-
-        val dialog = AlertDialog.Builder(activity)
-        dialog.setMultiChoiceItems(articleNames, null) {
-             _, which, isChecked ->
-                if (isChecked) {
-                    // If the user checked the item, add it to the selected items
-                    selectedItems.add(which)
-                } else if (selectedItems.contains(which)) {
-                    // Else, if the item is already in the array, remove it
-                    selectedItems.remove(which)
-                }
-            }
-            .setPositiveButton("OK"){dialog, id ->
-                val listSorted = ArrayList<ArticlesList>()
-                selectedItems.forEach{itemChecked ->
-                    listArticles.forEach { itemeList ->
-                        if (itemeList.articleSection.name == articleNames[itemChecked]){
-                            listSorted.add(itemeList)
-                        }
-                    }
-                }
-                binding.viewPager2.adapter = ArticleAdapter(listSorted, activity)
-                addTablayout(listSorted)
-            }
-            .create().show()
     }
 
 }

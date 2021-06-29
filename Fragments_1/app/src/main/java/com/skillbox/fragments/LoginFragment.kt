@@ -18,7 +18,7 @@ class LoginFragment: Fragment() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var progressBarLoginFragment: ProgressBar
-    val successLogin: SuccessLogin?
+    private val successLogin: SuccessLogin?
         get() = activity?.let { it as? SuccessLogin }
 
     override fun onCreateView(

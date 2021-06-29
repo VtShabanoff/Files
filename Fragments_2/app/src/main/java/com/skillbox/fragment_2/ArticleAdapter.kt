@@ -11,7 +11,6 @@ class ArticleAdapter(
     override fun getItemCount(): Int {
         return articles.size
     }
-    val list = listOf<Int>()
     override fun createFragment(position: Int): Fragment {
         val article: ArticlesList = articles[position]
        return ArticleFragment.newInstance(
