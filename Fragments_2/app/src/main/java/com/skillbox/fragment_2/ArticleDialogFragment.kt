@@ -2,58 +2,95 @@ package com.skillbox.fragment_2
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.DialogFragment
 
-class ArticleDialogFragment: DialogFragment() {
-    private var selectedItems = ArrayList<Int>()
-    private val itemMultiChoiceListener: ItemMultiChoiceListener
-        get() = activity as ItemMultiChoiceListener
+class ArticleDialogFragment : DialogFragment() {
+
+    private val itemMultiChoiceListener: ItemMultiChoiceListener?
+        get() = activity?.let { it as ItemMultiChoiceListener }
 
     private val articleNames = arrayOf(
-        ArticleSection.CAT.name,
-        ArticleSection.DOG.name,
-        ArticleSection.BIRD.name,
+        ArticleSection.CAT,
+        ArticleSection.DOG,
+        ArticleSection.BIRD
     )
-    var arrayCheckItems = booleanArrayOf(false, false, false)
+    private val selectedItems = ArrayList<Int>()
+    private var arrayCheckItems = BooleanArray(3) { false }
+    private lateinit var currentTypes: ArrayList<ArticleSection>
+    private var names = Array(3) { "" }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        arrayCheckItems = requireArguments().getBooleanArray(KEY_CHECKS)!!
-        selectedItems = requireArguments().getIntegerArrayList(KEY_SELECTED_LIST) as ArrayList<Int>
-        return activity?.let {
+        if (arguments != null) {
+            currentTypes =
+                requireArguments().getParcelableArrayList<ArticleSection>(KEY_CURRENT_TYPE) as ArrayList<ArticleSection>
+            arrayCheckItems = createChecks(currentTypes)
+            saveItems(currentTypes)
+        }
 
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("choice group")
-                .setMultiChoiceItems(articleNames, arrayCheckItems)
-                { _, which, isChecked ->
-                        if (isChecked) {
-                            selectedItems.add(which)
-                            arrayCheckItems[which] = true
-                        } else if (selectedItems.contains(which)) {
-                            selectedItems.remove(which)
-                            arrayCheckItems[which] = false
-                        }
-                    }
-                .setPositiveButton("OK") { _, _ ->
-                    if (selectedItems.size > 0) {
-                        itemMultiChoiceListener.onItemMultiChoice(selectedItems, arrayCheckItems)
-                    }
-                    }
-                .setNegativeButton("CANCEL"){ dialog, _ ->
-                        dialog.cancel()
-                    }
-            builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        typeNames()
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("choice group")
+            .setMultiChoiceItems(names, arrayCheckItems)
+            { _, which, isChecked ->
+                if (isChecked) {
+                    selectedItems.add(which)
+                } else if (selectedItems.contains(which)) {
+                    selectedItems.remove(which)
+                }
+            }
+            .setPositiveButton("OK") { _, _ ->
+                generateTypes(selectedItems)
+                getTypes(currentTypes)
+
+            }
+            .setNegativeButton("CANCEL") { dialog, _ ->
+                dialog.cancel()
+            }
+        return builder.create()
     }
 
-    companion object{
-        private const val KEY_CHECKS = "key_checks"
-        private const val KEY_SELECTED_LIST = "key_selected_list"
-        fun newInstance(selectedList: ArrayList<Int>, arrayChecks: BooleanArray): ArticleDialogFragment{
+    private fun createChecks(currentTypes: ArrayList<ArticleSection>): BooleanArray {
+        currentTypes.forEach {
+            val indexCurrentType = articleNames.indexOf(it)
+            arrayCheckItems[indexCurrentType] = true
+            selectedItems.add(indexCurrentType)
+
+        }
+        return arrayCheckItems
+    }
+
+    private fun saveItems(currentTypes: ArrayList<ArticleSection>){
+        currentTypes.forEach {
+            val indexCurrentType = articleNames.indexOf(it)
+            selectedItems.add(indexCurrentType)
+        }
+    }
+
+    private fun typeNames() {
+        articleNames.forEachIndexed { index, articleSection -> names[index] = articleSection.name }
+    }
+
+    private fun generateTypes(selectedItems: ArrayList<Int>) {
+        currentTypes = ArrayList() // инициализтруем тут
+        selectedItems.forEach { currentTypes.add(articleNames[it]) } // приводим Int к типу enum
+    }
+
+    private fun getTypes(currentTypes: ArrayList<ArticleSection>) {
+        itemMultiChoiceListener?.onItemMultiChoice(currentTypes)
+    }
+
+    companion object {
+
+        private const val KEY_CURRENT_TYPE = "key_selected_list"
+
+        fun newInstance(
+            articleSection: ArrayList<ArticleSection>,
+        ): ArticleDialogFragment {
             return ArticleDialogFragment().withArguments {
-                putIntegerArrayList(KEY_SELECTED_LIST, selectedList)
-                putBooleanArray(KEY_CHECKS, arrayChecks)
+                putParcelableArrayList(KEY_CURRENT_TYPE, articleSection)
             }
         }
     }
