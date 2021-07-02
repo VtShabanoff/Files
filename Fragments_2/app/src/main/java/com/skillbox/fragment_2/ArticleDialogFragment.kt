@@ -16,29 +16,34 @@ class ArticleDialogFragment : DialogFragment() {
         ArticleSection.DOG,
         ArticleSection.BIRD
     )
-    private val selectedItems = ArrayList<Int>()
-    private var arrayCheckItems = BooleanArray(3) { false }
+    private lateinit var selectedItems: ArrayList<Int>
+    private lateinit var arrayCheckItems: BooleanArray
     private lateinit var currentTypes: ArrayList<ArticleSection>
-    private var names = Array(3) { "" }
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        selectedItems = ArrayList()
         if (arguments != null) {
             currentTypes =
-                requireArguments().getParcelableArrayList<ArticleSection>(KEY_CURRENT_TYPE) as ArrayList<ArticleSection>
+                arguments?.getParcelableArrayList<ArticleSection>(KEY_CURRENT_TYPE) as ArrayList<ArticleSection>
             arrayCheckItems = createChecks(currentTypes)
             saveItems(currentTypes)
+        } else {
+            arrayCheckItems = BooleanArray(3) { true }
+            saveItems(articleNames)
         }
 
-        typeNames()
+        val generatedNames = enumTypesToString(articleNames)
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("choice group")
-            .setMultiChoiceItems(names, arrayCheckItems)
+            .setMultiChoiceItems(generatedNames, arrayCheckItems)
             { _, which, isChecked ->
-                if (isChecked) {
-                    selectedItems.add(which)
-                } else if (selectedItems.contains(which)) {
+
+                if (!isChecked && selectedItems.contains(which)) {
                     selectedItems.remove(which)
+                } else {
+                    selectedItems.add(which)
                 }
             }
             .setPositiveButton("OK") { _, _ ->
@@ -52,7 +57,14 @@ class ArticleDialogFragment : DialogFragment() {
         return builder.create()
     }
 
+    private fun saveItems(articleNames: Array<ArticleSection>) {
+        articleNames.forEachIndexed { index, _ ->
+            selectedItems.add(index)
+        }
+    }
+
     private fun createChecks(currentTypes: ArrayList<ArticleSection>): BooleanArray {
+        arrayCheckItems = BooleanArray(3) { false }
         currentTypes.forEach {
             val indexCurrentType = articleNames.indexOf(it)
             arrayCheckItems[indexCurrentType] = true
@@ -62,19 +74,23 @@ class ArticleDialogFragment : DialogFragment() {
         return arrayCheckItems
     }
 
-    private fun saveItems(currentTypes: ArrayList<ArticleSection>){
+    private fun saveItems(currentTypes: ArrayList<ArticleSection>) {
         currentTypes.forEach {
             val indexCurrentType = articleNames.indexOf(it)
-            selectedItems.add(indexCurrentType)
+            if (!selectedItems.contains(indexCurrentType)) {
+                selectedItems.add(indexCurrentType)
+            }
         }
     }
 
-    private fun typeNames() {
+    private fun enumTypesToString(articleNames: Array<ArticleSection>): Array<String> {
+        val names = Array(3) { "" }
         articleNames.forEachIndexed { index, articleSection -> names[index] = articleSection.name }
+        return names
     }
 
     private fun generateTypes(selectedItems: ArrayList<Int>) {
-        currentTypes = ArrayList() // инициализтруем тут
+        currentTypes = ArrayList()// инициализтруем тут
         selectedItems.forEach { currentTypes.add(articleNames[it]) } // приводим Int к типу enum
     }
 
@@ -83,7 +99,6 @@ class ArticleDialogFragment : DialogFragment() {
     }
 
     companion object {
-
         private const val KEY_CURRENT_TYPE = "key_selected_list"
 
         fun newInstance(
@@ -94,5 +109,4 @@ class ArticleDialogFragment : DialogFragment() {
             }
         }
     }
-
 }

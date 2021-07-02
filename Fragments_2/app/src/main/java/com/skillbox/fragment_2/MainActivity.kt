@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
         setContentView(binding.root)
 
         _pager = binding.viewPager2
+
         binding.filterButton.setOnClickListener {
             showDialogFragment()
         }
@@ -93,7 +94,6 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
             updatePagerAdapter(listArticles)
             updateTablayout(listArticles)
         }
-
     }
 
     private fun showDialogFragment() {
@@ -116,11 +116,9 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
         pager.adapter = adapter
     }
 
-
     private fun filterArticleListForMultiChoice(
         currentTypes: ArrayList<ArticleSection>,
     ) {
-        Log.d("TAGG", "filterArticleListForMultiChoice -> currentTypes = ${currentTypes.size}")
         filterArticles = ArrayList()
         currentTypes.forEach { type ->
             listArticles.forEach { article ->
@@ -130,7 +128,6 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
                 }
             }
         }
-        Log.d("TAGG", "filterArticleListForMultiChoice -> filterArticles = ${filterArticles.size}")
         updatePagerAdapter(filterArticles)
         updateTablayout(filterArticles)
     }
@@ -165,23 +162,17 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
         Log.d("TAG", "onSaveInstanceState currentTypes = ${currentTypes.size}")
     }
 
-
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
         currentTypes =
             savedInstanceState.getParcelableArrayList<ArticleSection>(KEY_CURRENT_TYPE) as ArrayList<ArticleSection>
 
-            if (currentTypes.isNotEmpty()){
-
+        if (currentTypes.isNotEmpty()) {
             filterArticleListForMultiChoice(currentTypes)
-            Log.d("TAG", "onRestoreInstanceState currentTypes = ${currentTypes.size}")
-
-        }else{
+        } else {
             updatePagerAdapter(listArticles)
             updateTablayout(listArticles)
-            Log.d("TAG", "currentTypes = ${currentTypes.size}")
-            Log.d("TAG", "listArticles = ${listArticles.size}")
         }
     }
 
