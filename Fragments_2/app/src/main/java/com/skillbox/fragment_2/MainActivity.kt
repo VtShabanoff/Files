@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
     private var _pager: ViewPager2? = null
     private val pager
         get() = _pager!!
+    //пробный коммент для git
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
