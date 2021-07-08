@@ -41,10 +41,13 @@ class ArticleDialogFragment : DialogFragment() {
             { _, which, isChecked ->
 
                 if (!isChecked && selectedItems.contains(which)) {
+                    Log.d("TAGG", "selectedItems.size >=1 = ${selectedItems.size}")
                     selectedItems.remove(which)
+
                 } else {
                     selectedItems.add(which)
                 }
+
             }
             .setPositiveButton("OK") { _, _ ->
                 generateTypes(selectedItems)
@@ -96,6 +99,16 @@ class ArticleDialogFragment : DialogFragment() {
 
     private fun getTypes(currentTypes: ArrayList<ArticleSection>) {
         itemMultiChoiceListener?.onItemMultiChoice(currentTypes)
+    }
+
+    private fun isAllFalseOrTrue(booleanArray: BooleanArray): Boolean {
+        var x = 1
+        for (i in booleanArray) {
+            if (!i) {
+                return false
+            }
+        }
+        return true
     }
 
     companion object {
