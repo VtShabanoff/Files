@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Car</string>
+    <string name="hint_model_edit_text">Введите модель авто</string>
+    <string name="hint_make_edit_text">Введите марку авто</string>
+    <string name="check_box_is_electric_car">Это электромобиль</string>
+    <string name="todo">TODO</string>
 </resources>

@@ -160,7 +160,6 @@ class MainActivity : AppCompatActivity(), ItemMultiChoiceListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(KEY_CURRENT_TYPE, currentTypes)
-        Log.d("TAG", "onSaveInstanceState currentTypes = ${currentTypes.size}")
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

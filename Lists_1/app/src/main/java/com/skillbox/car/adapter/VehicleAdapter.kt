@@ -11,10 +11,10 @@ import com.skillbox.car.R
 import com.skillbox.car.data_class.Vehicle
 import com.skillbox.car.inflate
 
-class CarAdapter(
+class VehicleAdapter(
     private val onItemClick: (position: Int) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var vehicles: List<Vehicle> = emptyList()
+    private lateinit var vehicles: List<Vehicle>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
@@ -48,7 +48,7 @@ class CarAdapter(
 
     override fun getItemCount(): Int = vehicles.size
 
-    fun updateCars(newCar: List<Vehicle>){
+    fun updateVehicle(newCar: List<Vehicle>){
         vehicles = newCar
     }
 
@@ -99,7 +99,7 @@ class CarAdapter(
 
             fun bind(car: Vehicle.ElectricCar){
                 bindMainInfo(car.modelName, car.makeCar, car.avatarLink)
-                typeElectricCar.text = "000"
+                typeElectricCar.text = "${car.typeCar}"
             }
         }
     }

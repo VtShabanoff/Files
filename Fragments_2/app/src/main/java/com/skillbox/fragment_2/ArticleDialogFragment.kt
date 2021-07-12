@@ -40,8 +40,7 @@ class ArticleDialogFragment : DialogFragment() {
             .setMultiChoiceItems(generatedNames, arrayCheckItems)
             { _, which, isChecked ->
 
-                if (!isChecked && selectedItems.contains(which)) {
-                    Log.d("TAGG", "selectedItems.size >=1 = ${selectedItems.size}")
+                if (!isChecked) {
                     selectedItems.remove(which)
 
                 } else {
