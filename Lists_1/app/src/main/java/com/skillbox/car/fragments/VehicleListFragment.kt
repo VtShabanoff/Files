@@ -44,6 +44,8 @@ class VehicleListFragment : Fragment(), TransferringDate {
         if (savedInstanceState != null){
             vehicles = savedInstanceState.getParcelableArrayList(KEY_VEHICLES)
                 ?: throw Exception("vehicles = null")
+            binding.listEmptyTextView.isVisible = vehicles.isEmpty()
+            Log.d("TAG", "if (savedInstanceState != null) -> vehicles.size = ${vehicles.size}")
         }
 
         binding.addFAD.setOnClickListener {
@@ -53,7 +55,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
 
         vehicleAdapter.updateVehicle(vehicles)
         vehicleAdapter.notifyDataSetChanged()
-        testForEmptinessVehicles(vehicles)
+
 
     }
 
@@ -73,11 +75,10 @@ class VehicleListFragment : Fragment(), TransferringDate {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
-        testForEmptinessVehicles(vehicles)
+        binding.listEmptyTextView.isVisible = vehicles.isEmpty()
     }
 
     private fun deleteVehicle(position: Int) {
-        testForEmptinessVehicles(vehicles)
         vehicles = vehicles.filterIndexed { index, _ ->
             index != position
         }
@@ -85,6 +86,8 @@ class VehicleListFragment : Fragment(), TransferringDate {
             updateVehicle(vehicles)
             notifyItemRemoved(position)
         }
+        
+        binding.listEmptyTextView.isVisible = vehicles.isEmpty()
     }
 
     private fun createVehicle(nameModel:String, nameMake: String, isElectric:Boolean): Vehicle{
@@ -105,6 +108,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
     }
 
     private fun addVehicleToList() {
+        Log.d("TAG", "vehicles.size = ${vehicles.size}")
         val newVehicle = createVehicle(textModel, textMake, isElectric)
         vehicles = listOf(newVehicle) + vehicles
         with(vehicleAdapter) {
@@ -112,20 +116,23 @@ class VehicleListFragment : Fragment(), TransferringDate {
             notifyItemInserted(0)
         }
         binding.vehicleList.scrollToPosition(0)
-        testForEmptinessVehicles(vehicles)
+
+        binding.listEmptyTextView.isVisible = vehicles.isEmpty()
+        Log.d("TAG", "vehicles.size = ${vehicles.size}")
     }
 
-    private fun testForEmptinessVehicles(vehicles: List<Vehicle>){
-        binding.listEmptyTextView.isVisible = vehicles.isNotEmpty()
-    }
+//    private fun testForEmptinessVehicles(vehicles: List<Vehicle>){
+//        binding.listEmptyTextView.isVisible = vehicles.isNotEmpty()
+//    }
 
     override fun onTransferDate(inputModel: String, inputMake: String, type: Boolean) {
         textModel = inputModel
         textMake = inputMake
         isElectric = type
         addVehicleToList()
-        testForEmptinessVehicles(vehicles)
-        Log.d("TAG", "onTransferDate -> addVehicleToList() -> vehicles = ${vehicles.size}")
+
+        binding.listEmptyTextView.isVisible = vehicles.isEmpty()
+
     }
 
     companion object {
