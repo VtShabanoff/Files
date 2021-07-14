@@ -86,7 +86,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
             updateVehicle(vehicles)
             notifyItemRemoved(position)
         }
-        
+
         binding.listEmptyTextView.isVisible = vehicles.isEmpty()
     }
 

@@ -13,9 +13,9 @@ class HostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_host)
         binding = ActivityHostBinding.inflate(layoutInflater)
-        showListVehicleFragment()
 
-
+        savedInstanceState ?: showListVehicleFragment()
+        
     }
     private fun showListVehicleFragment(){
         supportFragmentManager.beginTransaction()
