@@ -17,6 +17,7 @@ import com.skillbox.car.dialog.DialogCreateVehicle
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import java.lang.Exception
 import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 class VehicleListFragment : Fragment(), TransferringDate {
     private var _binding: FragmentListVehicleBinding? = null
@@ -34,7 +35,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListVehicleBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +47,6 @@ class VehicleListFragment : Fragment(), TransferringDate {
             vehicles = savedInstanceState.getParcelableArrayList(KEY_VEHICLES)
                 ?: throw Exception("vehicles = null")
             binding.listEmptyTextView.isVisible = vehicles.isEmpty()
-            Log.d("TAG", "if (savedInstanceState != null) -> vehicles.size = ${vehicles.size}")
         }
 
         binding.addFAD.setOnClickListener {
@@ -54,8 +54,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
         }
         initRecycleView()
 
-        vehicleAdapter.updateVehicle(vehicles)
-        vehicleAdapter.notifyDataSetChanged()
+        vehicleAdapter.items = vehicles
 
 
     }
@@ -85,7 +84,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
             index != position
         }
         with(vehicleAdapter) {
-            updateVehicle(vehicles)
+            items = vehicles
             notifyItemRemoved(position)
         }
 
@@ -95,6 +94,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
     private fun createVehicle(nameModel:String, nameMake: String, isElectric:Boolean): Vehicle{
        return if (isElectric) {
             Vehicle.ElectricCar(
+                id = Random.nextLong(),
                 modelName = nameModel,
                 makeCar = nameMake,
                 avatarLink = LINK_ELECTRIC,
@@ -102,6 +102,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
             )
         } else {
             Vehicle.Car(
+                id = Random.nextLong(),
                 modelName = nameModel,
                 makeCar = nameMake,
                 avatarLink = LINK_CAR
@@ -110,22 +111,16 @@ class VehicleListFragment : Fragment(), TransferringDate {
     }
 
     private fun addVehicleToList() {
-        Log.d("TAG", "vehicles.size = ${vehicles.size}")
         val newVehicle = createVehicle(textModel, textMake, isElectric)
         vehicles = listOf(newVehicle) + vehicles
         with(vehicleAdapter) {
-            updateVehicle(vehicles)
+            items = vehicles
             notifyItemInserted(0)
         }
         binding.vehicleList.scrollToPosition(0)
 
         binding.listEmptyTextView.isVisible = vehicles.isEmpty()
-        Log.d("TAG", "vehicles.size = ${vehicles.size}")
     }
-
-//    private fun testForEmptinessVehicles(vehicles: List<Vehicle>){
-//        binding.listEmptyTextView.isVisible = vehicles.isNotEmpty()
-//    }
 
     override fun onTransferDate(inputModel: String, inputMake: String, type: Boolean) {
         textModel = inputModel

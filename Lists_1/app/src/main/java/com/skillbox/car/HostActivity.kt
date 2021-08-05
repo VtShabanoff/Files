@@ -15,7 +15,7 @@ class HostActivity : AppCompatActivity() {
         binding = ActivityHostBinding.inflate(layoutInflater)
 
         savedInstanceState ?: showListVehicleFragment()
-        
+
     }
     private fun showListVehicleFragment(){
         supportFragmentManager.beginTransaction()
