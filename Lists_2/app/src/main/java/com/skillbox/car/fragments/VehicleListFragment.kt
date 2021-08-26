@@ -1,7 +1,6 @@
 package com.skillbox.car.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentListVehicleBinding.inflate(inflater, container, false)
         return binding.root
@@ -43,7 +42,7 @@ class VehicleListFragment : Fragment(), TransferringDate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             vehicles = savedInstanceState.getParcelableArrayList(KEY_VEHICLES)
                 ?: throw Exception("vehicles = null")
             binding.listEmptyTextView.isVisible = vehicles.isEmpty()
@@ -85,14 +84,13 @@ class VehicleListFragment : Fragment(), TransferringDate {
         }
         with(vehicleAdapter) {
             items = vehicles
-            notifyItemRemoved(position)
         }
 
         binding.listEmptyTextView.isVisible = vehicles.isEmpty()
     }
 
-    private fun createVehicle(nameModel:String, nameMake: String, isElectric:Boolean): Vehicle{
-       return if (isElectric) {
+    private fun createVehicle(nameModel: String, nameMake: String, isElectric: Boolean): Vehicle {
+        return if (isElectric) {
             Vehicle.ElectricCar(
                 id = Random.nextLong(),
                 modelName = nameModel,
@@ -115,7 +113,6 @@ class VehicleListFragment : Fragment(), TransferringDate {
         vehicles = listOf(newVehicle) + vehicles
         with(vehicleAdapter) {
             items = vehicles
-            notifyItemInserted(0)
         }
         binding.vehicleList.scrollToPosition(0)
 
