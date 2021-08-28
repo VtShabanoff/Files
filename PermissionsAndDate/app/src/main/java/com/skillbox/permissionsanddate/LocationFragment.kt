@@ -125,8 +125,8 @@ class LocationFragment : Fragment(R.layout.fragment_location) {
     }
 
     private fun initRecycleView() {
-        locationAdapter = LocationAdapter { position ->
-            initTimeDatePiker(position)
+        locationAdapter = LocationAdapter { id ->
+            initTimeDatePiker(id)
         }
 
         with(binding.locationList) {
@@ -150,7 +150,7 @@ class LocationFragment : Fragment(R.layout.fragment_location) {
     }
 
 
-    private fun initTimeDatePiker(position: Int) {
+    private fun initTimeDatePiker(id: Long) {
 
         val currentDateTime = LocalDateTime.now()
         DatePickerDialog(
@@ -164,6 +164,11 @@ class LocationFragment : Fragment(R.layout.fragment_location) {
                                 .atZone(ZoneId.systemDefault())
                         Toast.makeText(requireContext(), "time $zonedDateTime", Toast.LENGTH_LONG).show()
                         selectedDateTimeInstant = zonedDateTime.toInstant()
+                        val findLocId = locations.find { it.id == id }
+                        val position = locations.indexOf(findLocId)
+                        locations[position].createdAt = selectedDateTimeInstant
+                            ?: throw Exception("error DateTime")
+                        locationAdapter.notifyItemChanged(position)
                     },
                     currentDateTime.hour,
                     currentDateTime.minute,

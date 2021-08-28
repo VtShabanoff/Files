@@ -12,10 +12,12 @@ import com.skillbox.permissionsanddate.R
 import com.skillbox.permissionsanddate.databinding.ItemLocationBinding
 import org.threeten.bp.ZoneId
 import org.threeten.bp.format.DateTimeFormatter
+import kotlin.properties.Delegates
 
 class LocationAdapter(
-    private val onItemClick: (position: Int) -> Unit,
+    private val onItemClick: (id: Long) -> Unit,
 ) : ListAdapter<MyLocation, LocationAdapter.LocationHolder>(LocationDiffUtilCallback()) {
+
 
     class LocationDiffUtilCallback : DiffUtil.ItemCallback<MyLocation>() {
 
@@ -30,16 +32,17 @@ class LocationAdapter(
 
     class LocationHolder(
         binding: ItemLocationBinding,
-        onItemClick: (position: Int) -> Unit,
+        onItemClick: (id: Long) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val locationTV = binding.location
         private val dateAndTimeTV = binding.dateAndTime
         private val imageViewAvatar = binding.avatarImageView
+        private var id by Delegates.notNull<Long>()
 
         init {
             binding.root.setOnClickListener {
-                onItemClick(absoluteAdapterPosition)
+                onItemClick(id)
             }
         }
 
@@ -50,6 +53,7 @@ class LocationAdapter(
         fun bind(myLocation: MyLocation) {
             locationTV.text = myLocation.location
             dateAndTimeTV.text = formatter.format(myLocation.createdAt)
+            id = myLocation.id
 
             Glide.with(itemView)
                 .load(myLocation.avatarLink)

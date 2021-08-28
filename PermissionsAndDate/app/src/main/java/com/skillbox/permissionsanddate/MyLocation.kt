@@ -5,7 +5,7 @@ import org.threeten.bp.Instant
 data class MyLocation(
     val id: Long,
     val location: String,
-    val createdAt: Instant,
+    var createdAt: Instant,
     val avatarLink: String
 
     )
