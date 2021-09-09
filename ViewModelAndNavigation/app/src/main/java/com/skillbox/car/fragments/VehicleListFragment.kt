@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillbox.car.AutoClearedValue
 import com.skillbox.car.VehicleListViewModel
@@ -16,12 +18,13 @@ import com.skillbox.car.databinding.FragmentListVehicleBinding
 import com.skillbox.car.dialog.DialogCreateVehicle
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 
-class VehicleListFragment : Fragment(), TransferringDate {
+class VehicleListFragment : Fragment(){
     private var _binding: FragmentListVehicleBinding? = null
     private val binding: FragmentListVehicleBinding
         get() = _binding!!
     private var vehicleAdapter by AutoClearedValue<VehicleAdapter>()
     private val vehicleViewModel: VehicleListViewModel by viewModels()
+    private val args: VehicleListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +39,12 @@ class VehicleListFragment : Fragment(), TransferringDate {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addFAD.setOnClickListener {
-            DialogCreateVehicle().show(childFragmentManager, "TAG")
+//            DialogCreateVehicle().show(childFragmentManager, "TAG")
+            val dialog =
+                VehicleListFragmentDirections.actionVehicleListFragmentToDialogCreateVehicle()
+            findNavController().navigate(dialog)
         }
+        addVehicleToList()
         initRecycleView()
         observeViewModelState()
     }
@@ -61,24 +68,16 @@ class VehicleListFragment : Fragment(), TransferringDate {
     }
 
     private fun addVehicleToList() {
-        vehicleViewModel.addVehicle()
+        vehicleViewModel.addVehicle(args.modelCar, args.makeCar, args.isElectricCar)
         binding.vehicleList.scrollToPosition(0)
         binding.listEmptyTextView.isVisible = vehicleViewModel.getVehicles().isEmpty()
     }
 
     private fun observeViewModelState(){
         vehicleViewModel.vehicles.observe(viewLifecycleOwner){
-            newVehicles -> vehicleAdapter.items = newVehicles
+                newVehicles -> vehicleAdapter.items = newVehicles
         }
     }
-
-    override fun onTransferDate(inputModel: String, inputMake: String, type: Boolean) {
-//        textModel = inputModel
-//        textMake = inputMake
-//        isElectric = type
-        addVehicleToList()
-        binding.listEmptyTextView.isVisible = vehicleViewModel.getVehicles().isEmpty()
-    }
-
-
 }
+
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigationFragment">
+    <fragment
+        android:id="@+id/navigationFragment"
+        android:name="com.skillbox.car.fragments.NavigationFragment"
+        android:label="NavigationFragment"
+        tools:layout="@layout/fragment_navigation">
+        <action
+            android:id="@+id/action_navigationFragment_to_vehicleListFragment"
+            app:destination="@id/vehicleListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/vehicleListFragment"
+        android:name="com.skillbox.car.fragments.VehicleListFragment"
+        android:label="VehicleListFragment"
+        tools:layout="@layout/fragment_list_vehicle" >
+        <argument
+            android:name="modelCar"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="makeCar"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="isElectricCar"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_vehicleListFragment_to_dialogCreateVehicle"
+            app:destination="@id/dialogCreateVehicle" />
+    </fragment>
+    <fragment
+        android:id="@+id/dialogCreateVehicle"
+        android:name="com.skillbox.car.dialog.DialogCreateVehicle"
+        tools:layout="@layout/vehicle_create_dialog"
+        android:label="DialogCreateVehicle" >
+        <action
+            android:id="@+id/action_dialogCreateVehicle_to_vehicleListFragment"
+            app:destination="@id/vehicleListFragment" />
+    </fragment>
+</navigation>
