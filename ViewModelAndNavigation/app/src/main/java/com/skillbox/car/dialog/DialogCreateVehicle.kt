@@ -36,6 +36,7 @@ class DialogCreateVehicle: DialogFragment() {
             .setNegativeButton("CANCEL"){dialog, _->
                 dialog.cancel()
             }
+            .show()
        return builder.create()
     }
 }

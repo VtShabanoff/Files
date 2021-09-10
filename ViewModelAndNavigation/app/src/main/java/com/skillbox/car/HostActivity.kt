@@ -3,7 +3,6 @@ package com.skillbox.car
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.skillbox.car.databinding.ActivityHostBinding
-import com.skillbox.car.fragments.ContainerFragment
 
 class HostActivity : AppCompatActivity() {
 

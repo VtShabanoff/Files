@@ -12,10 +12,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillbox.car.AutoClearedValue
 import com.skillbox.car.VehicleListViewModel
-import com.skillbox.car.`interface`.TransferringDate
 import com.skillbox.car.adapter.VehicleAdapter
 import com.skillbox.car.databinding.FragmentListVehicleBinding
-import com.skillbox.car.dialog.DialogCreateVehicle
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 
 class VehicleListFragment : Fragment(){
@@ -41,7 +39,7 @@ class VehicleListFragment : Fragment(){
         binding.addFAD.setOnClickListener {
 //            DialogCreateVehicle().show(childFragmentManager, "TAG")
             val dialog =
-                VehicleListFragmentDirections.actionVehicleListFragmentToDialogCreateVehicle()
+               VehicleListFragmentDirections.actionVehicleListFragmentToDialogCreateVehicle()
             findNavController().navigate(dialog)
         }
         addVehicleToList()

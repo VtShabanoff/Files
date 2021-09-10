@@ -11,6 +11,8 @@
         tools:layout="@layout/fragment_navigation">
         <action
             android:id="@+id/action_navigationFragment_to_vehicleListFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
             app:destination="@id/vehicleListFragment" />
     </fragment>
     <fragment
@@ -34,7 +36,7 @@
             android:id="@+id/action_vehicleListFragment_to_dialogCreateVehicle"
             app:destination="@id/dialogCreateVehicle" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/dialogCreateVehicle"
         android:name="com.skillbox.car.dialog.DialogCreateVehicle"
         tools:layout="@layout/vehicle_create_dialog"
@@ -42,5 +44,5 @@
         <action
             android:id="@+id/action_dialogCreateVehicle_to_vehicleListFragment"
             app:destination="@id/vehicleListFragment" />
-    </fragment>
+    </dialog>
 </navigation>
