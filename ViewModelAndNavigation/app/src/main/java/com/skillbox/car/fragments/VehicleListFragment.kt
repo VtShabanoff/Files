@@ -6,14 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skillbox.car.AutoClearedValue
+import com.skillbox.car.R
 import com.skillbox.car.VehicleListViewModel
 import com.skillbox.car.adapter.VehicleAdapter
 import com.skillbox.car.databinding.FragmentListVehicleBinding
+import com.skillbox.car.getNavigationResult
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 
 class VehicleListFragment : Fragment(){
@@ -37,20 +44,22 @@ class VehicleListFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         binding.addFAD.setOnClickListener {
-//            DialogCreateVehicle().show(childFragmentManager, "TAG")
             val dialog =
                VehicleListFragmentDirections.actionVehicleListFragmentToDialogCreateVehicle()
             findNavController().navigate(dialog)
         }
-        addVehicleToList()
+        getBackStackEntryArgs()
         initRecycleView()
         observeViewModelState()
     }
 
     private fun initRecycleView() {
-        vehicleAdapter = VehicleAdapter { position ->
-            deleteVehicle(position)
-        }
+        vehicleAdapter = VehicleAdapter({ id ->
+            deleteVehicle(id)
+        },{
+            findNavController().navigate(R.id.action_vehicleListFragment_to_detailedFragment)
+        })
+
         with(binding.vehicleList) {
             adapter = vehicleAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -60,21 +69,54 @@ class VehicleListFragment : Fragment(){
         binding.listEmptyTextView.isVisible = vehicleViewModel.getVehicles().isEmpty()
     }
 
-    private fun deleteVehicle(position: Int) {
+    private fun deleteVehicle(position: Long) {
         vehicleViewModel.deleteVehicle(position)
         binding.listEmptyTextView.isVisible = vehicleViewModel.getVehicles().isEmpty()
     }
 
-    private fun addVehicleToList() {
-        vehicleViewModel.addVehicle(args.modelCar, args.makeCar, args.isElectricCar)
-        binding.vehicleList.scrollToPosition(0)
-        binding.listEmptyTextView.isVisible = vehicleViewModel.getVehicles().isEmpty()
-    }
+//    private fun addVehicleToList() {
+//        vehicleViewModel.addVehicle(args.modelCar, args.makeCar, args.isElectricCar)
+//        binding.vehicleList.scrollToPosition(0)
+//        binding.listEmptyTextView.isVisible = vehicleViewModel.getVehicles().isEmpty()
+//    }
 
     private fun observeViewModelState(){
         vehicleViewModel.vehicles.observe(viewLifecycleOwner){
                 newVehicles -> vehicleAdapter.items = newVehicles
         }
+    }
+    private fun getBackStackEntryArgs(){
+        val navController = findNavController()
+        val navBackStackEntry = navController.getBackStackEntry(R.id.vehicleListFragment)
+
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME
+                && navBackStackEntry.savedStateHandle.contains(KEY_ARGS_MODEL_CAR)
+                && navBackStackEntry.savedStateHandle.contains(KEY_ARGS_MAKE_CAR)
+                && navBackStackEntry.savedStateHandle.contains(KEY_ARGS_IS_ELECTRIC_CAR)){
+
+                    val modelCar = getNavigationResult<String>(KEY_ARGS_MODEL_CAR)
+                        ?: throw Exception("no model args")
+                    val makeCar = getNavigationResult<String>(KEY_ARGS_MAKE_CAR)
+                        ?: throw Exception("no make args")
+                    val isElectricCar = getNavigationResult<Boolean>(KEY_ARGS_IS_ELECTRIC_CAR)
+                        ?: throw Exception("no isElectric args")
+                    vehicleViewModel.addVehicle(modelCar, makeCar, isElectricCar)
+
+            }
+        }
+        navBackStackEntry.lifecycle.addObserver(observer)
+
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                navBackStackEntry.lifecycle.removeObserver(observer)
+            }
+        })
+    }
+    companion object{
+        const val KEY_ARGS_MODEL_CAR = "key_args_model_car"
+        const val KEY_ARGS_MAKE_CAR = "key_args_make_car"
+        const val KEY_ARGS_IS_ELECTRIC_CAR = "key_args_is_electric_car"
     }
 }
 

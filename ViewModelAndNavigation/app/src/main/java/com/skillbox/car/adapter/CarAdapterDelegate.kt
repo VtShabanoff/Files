@@ -8,6 +8,7 @@ import com.skillbox.car.data_class.Vehicle
 import com.skillbox.car.databinding.ItemCarBinding
 
 class CarAdapterDelegate(
+    private val onItemLongClick: (id: Long) -> Unit,
     private val onItemClick: (position: Int) -> Unit
 ): AbsListItemAdapterDelegate<Vehicle.Car, Vehicle, CarAdapterDelegate.CarHolder>() {
 
@@ -17,7 +18,7 @@ class CarAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): CarHolder {
         return CarHolder(ItemCarBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false), onItemClick)
+            LayoutInflater.from(parent.context), parent, false), onItemLongClick, onItemClick)
     }
 
     override fun onBindViewHolder(
@@ -30,11 +31,12 @@ class CarAdapterDelegate(
 
     class CarHolder(
         binding: ItemCarBinding,
-        onItemClick: (position: Int) -> Unit,
-    ) : BaseAdapterHolder(binding, onItemClick){
+        onItemLongClick: (id: Long) -> Unit,
+        onItemClick: (position: Int) -> Unit
+    ) : BaseAdapterHolder(binding, onItemLongClick, onItemClick){
 
         fun bind(car: Vehicle.Car){
-            bindMainInfo(car.modelName, car.makeCar, car.avatarLink)
+            bindMainInfo(car.modelName, car.makeCar, car.avatarLink, car.id)
             typeCar.isVisible = false
         }
     }

@@ -24,9 +24,9 @@ class VehicleRepository {
         }
     }
 
-    fun deleteVehicle(vehicles: List<Vehicle>, position: Int): List<Vehicle>{
+    fun deleteVehicle(vehicles: List<Vehicle>, id: Long): List<Vehicle>{
         return vehicles.filterIndexed { index, _ ->
-            index != position
+            index.toLong() == id
         }
     }
     companion object {

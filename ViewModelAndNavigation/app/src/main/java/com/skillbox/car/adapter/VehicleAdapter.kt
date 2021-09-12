@@ -9,12 +9,13 @@ import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 import com.skillbox.car.data_class.Vehicle
 
 class VehicleAdapter(
+    onItemLongClick: (id: Long) -> Unit,
     onItemClick: (position: Int) -> Unit
 ): AsyncListDifferDelegationAdapter<Vehicle>(VehicleDiffUtilCallback()) {
 
     init {
-        delegatesManager.addDelegate(CarAdapterDelegate(onItemClick))
-            .addDelegate(ElectricCarAdapterDelegate(onItemClick))
+        delegatesManager.addDelegate(CarAdapterDelegate(onItemLongClick, onItemClick))
+            .addDelegate(ElectricCarAdapterDelegate(onItemLongClick, onItemClick))
     }
 
     class VehicleDiffUtilCallback: DiffUtil.ItemCallback<Vehicle>(){

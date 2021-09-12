@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skillbox.car.data_class.Vehicle
-import com.skillbox.car.fragments.VehicleListFragmentArgs
 
 class VehicleListViewModel: ViewModel() {
 
@@ -15,9 +14,9 @@ class VehicleListViewModel: ViewModel() {
 
     private val vehicleRepository = VehicleRepository()
 
-    fun deleteVehicle(position: Int){
+    fun deleteVehicle(id: Long){
         vehiclesLiveData
-            .postValue(vehicleRepository.deleteVehicle(vehiclesLiveData.value.orEmpty(), position))
+            .postValue(vehicleRepository.deleteVehicle(vehiclesLiveData.value.orEmpty(), id))
     }
 
     fun addVehicle(modelCar: String, makeCar: String, isElectricCar: Boolean){

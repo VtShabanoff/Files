@@ -2,6 +2,7 @@ package com.skillbox.car.adapter
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
@@ -9,9 +10,12 @@ import com.skillbox.car.R
 import com.skillbox.car.data_class.Vehicle
 import com.skillbox.car.databinding.ItemCarBinding
 import com.skillbox.car.databinding.ItemElictricCarBinding
+import java.text.FieldPosition
+import kotlin.properties.Delegates
 
 abstract class BaseAdapterHolder(
     binding: ViewBinding,
+    onItemLongClick: (id: Long) -> Unit,
     onItemClick: (position: Int) -> Unit
     ): RecyclerView.ViewHolder(binding.root) {
 
@@ -21,8 +25,9 @@ abstract class BaseAdapterHolder(
         lateinit var typeElectricCar: TextView
         lateinit var typeCar: TextView
         private lateinit var avatarTypeCar: ImageView
+        private var currentId: Long? = null
 
-        init {
+    init {
             when (binding){
                 is ItemCarBinding -> {
                     nameModel = binding.nameModelTextView
@@ -37,13 +42,20 @@ abstract class BaseAdapterHolder(
                     typeElectricCar = binding.typeElectricCar
                 }
             }
+
             binding.root.setOnClickListener {
                 onItemClick(absoluteAdapterPosition)
             }
+
+            binding.root.setOnLongClickListener {
+                currentId?.let { currentId -> onItemLongClick(currentId) }
+                return@setOnLongClickListener true
+            }
         }
-        fun bindMainInfo(model: String, make: String, avatarLink: String){
+        fun bindMainInfo(model: String, make: String, avatarLink: String, id: Long){
             nameModel.text = model
             nameMake.text = make
+            currentId = id
 
             Glide.with(itemView)
                 .load(avatarLink)

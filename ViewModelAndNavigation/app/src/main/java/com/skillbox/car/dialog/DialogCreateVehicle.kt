@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.skillbox.car.R
+import com.skillbox.car.VehicleListViewModel
+import com.skillbox.car.setNavigationResult
 
 class DialogCreateVehicle: DialogFragment() {
+   private val vehicleViewModel: VehicleListViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -24,19 +28,20 @@ class DialogCreateVehicle: DialogFragment() {
         builder.setView(view)
             .setTitle("Введите данные")
             .setPositiveButton("OK"){ _, _ ->
-                val actions = DialogCreateVehicleDirections
-                    .actionDialogCreateVehicleToVehicleListFragment(
-                        textModel.text.toString(),
-                        textMake.text.toString(),
-                        isElectric.isChecked
-                    )
-                findNavController().navigate(actions)
+
+                setNavigationResult(textModel.toString(), KEY_ARGS_MODEL_CAR)
+                setNavigationResult(textMake.toString(), KEY_ARGS_MAKE_CAR)
+                setNavigationResult(isElectric.isChecked, KEY_ARGS_IS_ELECTRIC_CAR)
 
             }
             .setNegativeButton("CANCEL"){dialog, _->
                 dialog.cancel()
             }
-            .show()
        return builder.create()
+    }
+    companion object{
+        const val KEY_ARGS_MODEL_CAR = "key_args_model_car"
+        const val KEY_ARGS_MAKE_CAR = "key_args_make_car"
+        const val KEY_ARGS_IS_ELECTRIC_CAR = "key_args_is_electric_car"
     }
 }

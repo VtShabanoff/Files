@@ -7,6 +7,7 @@ import com.skillbox.car.data_class.Vehicle
 import com.skillbox.car.databinding.ItemElictricCarBinding
 
 class ElectricCarAdapterDelegate(
+    private val onItemLongClick: (id: Long) -> Unit,
     private val onItemClick: (position: Int) -> Unit
 ): AbsListItemAdapterDelegate<Vehicle.ElectricCar, Vehicle, ElectricCarAdapterDelegate.ElectricCarHolder>() {
 
@@ -16,7 +17,7 @@ class ElectricCarAdapterDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): ElectricCarHolder {
         return  ElectricCarHolder(ItemElictricCarBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false), onItemClick)
+            LayoutInflater.from(parent.context), parent, false), onItemLongClick, onItemClick)
     }
 
     override fun onBindViewHolder(
@@ -29,12 +30,13 @@ class ElectricCarAdapterDelegate(
 
     class ElectricCarHolder(
         binding: ItemElictricCarBinding,
+        onItemLongClick: (id: Long) -> Unit,
         onItemClick: (position: Int) -> Unit
-    ): BaseAdapterHolder(binding, onItemClick){
+    ): BaseAdapterHolder(binding, onItemLongClick, onItemClick){
 
 
         fun bind(eCar: Vehicle.ElectricCar){
-            bindMainInfo(eCar.modelName, eCar.makeCar, eCar.avatarLink)
+            bindMainInfo(eCar.modelName, eCar.makeCar, eCar.avatarLink, eCar.id)
             typeElectricCar.text = "${eCar.typeCar}"
         }
     }
