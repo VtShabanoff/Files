@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.skillbox.car.R
 import com.skillbox.car.VehicleListViewModel
 import com.skillbox.car.setNavigationResult
+import com.skillbox.car.withArguments
 
 class DialogCreateVehicle: DialogFragment() {
    private val vehicleViewModel: VehicleListViewModel by activityViewModels()
@@ -29,13 +30,12 @@ class DialogCreateVehicle: DialogFragment() {
             .setTitle("Введите данные")
             .setPositiveButton("OK"){ _, _ ->
 
-                setNavigationResult(textModel.toString(), KEY_ARGS_MODEL_CAR)
-                setNavigationResult(textMake.toString(), KEY_ARGS_MAKE_CAR)
+                setNavigationResult(textModel.text.toString(), KEY_ARGS_MODEL_CAR)
+                setNavigationResult(textMake.text.toString(), KEY_ARGS_MAKE_CAR)
                 setNavigationResult(isElectric.isChecked, KEY_ARGS_IS_ELECTRIC_CAR)
 
             }
             .setNegativeButton("CANCEL"){dialog, _->
-                dialog.cancel()
             }
        return builder.create()
     }

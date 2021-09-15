@@ -1,5 +1,6 @@
 package com.skillbox.car
 
+import androidx.lifecycle.MutableLiveData
 import com.skillbox.car.data_class.Vehicle
 import kotlin.random.Random
 
@@ -25,8 +26,16 @@ class VehicleRepository {
     }
 
     fun deleteVehicle(vehicles: List<Vehicle>, id: Long): List<Vehicle>{
-        return vehicles.filterIndexed { index, _ ->
-            index.toLong() == id
+
+        val findByIdVehicle = vehicles.find {
+            (it as Vehicle.Car).id == id
+        } ?: vehicles.find {
+            (it as Vehicle.ElectricCar).id == id
+        }
+        val positionVehicle = vehicles.indexOf(findByIdVehicle)
+
+        return vehicles.filter{
+            it != vehicles[positionVehicle]
         }
     }
     companion object {

@@ -1,5 +1,6 @@
 package com.skillbox.car
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,4 +17,10 @@ fun <T> Fragment.getNavigationResult(key: String) =
 
 fun <T> Fragment.setNavigationResult(result: T, key: String) {
     findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
+}
+fun <T: Fragment> T.withArguments(action: Bundle.() -> Unit): T{
+    return apply {
+        val args = Bundle().apply(action)
+        arguments = args
+    }
 }
