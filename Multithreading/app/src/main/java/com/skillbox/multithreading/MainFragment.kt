@@ -3,22 +3,24 @@ package com.skillbox.multithreading
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_main.*
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.skillbox.multithreading.databinding.FragmentMainBinding
 
 class MainFragment: Fragment(R.layout.fragment_main) {
+    private val binding by viewBinding(FragmentMainBinding::bind)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        threading.setOnClickListener {
+        binding.threading.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_threadingFragment)
         }
-        deadlock.setOnClickListener {
+        binding.deadlock.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_deadlockFragment)
         }
-        raceCondition.setOnClickListener {
+        binding.raceCondition.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_raceConditionFragment)
         }
-        livelock.setOnClickListener {
+        binding.livelock.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_livelockFragment)
         }
     }
