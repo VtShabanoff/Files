@@ -7,12 +7,12 @@ import com.skillbox.multithreading.networking.Movie
 
 class MovieViewModel: ViewModel() {
     private val movieRepository = MovieRepository()
-    private val timeLiveData = MutableLiveData<Long>()
+
     private val moviesLiveData = MutableLiveData<List<Movie>>()
-    val time: LiveData<Long>
-        get() = timeLiveData
+
     val movies: LiveData<List<Movie>>
         get() = moviesLiveData
+
     private val movieIds = listOf(
         "tt0111161",
         "tt0068646",
@@ -27,15 +27,10 @@ class MovieViewModel: ViewModel() {
     )
 
     fun requestMovie(){
-        val startTime = System.currentTimeMillis()
-
-        val fMovies = movieIds.mapNotNull { movieId ->
-            movieRepository.getMovieById(movieId)
+        movieRepository.fetchMovies(movieIds){
+            movies ->
+            moviesLiveData.postValue(movies)
         }
-
-        val requestTime = System.currentTimeMillis() - startTime
-        timeLiveData.postValue(requestTime)
-        moviesLiveData.postValue(fMovies)
     }
 
 }

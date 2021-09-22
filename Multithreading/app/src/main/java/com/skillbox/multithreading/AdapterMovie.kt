@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.skillbox.multithreading.databinding.ItemMovieBinding
 import com.skillbox.multithreading.networking.Movie
 
-class AdapterMovie(): ListAdapter<Movie, AdapterMovie.MovieHolder>(MovieDiffUtilCallback()) {
+class AdapterMovie: ListAdapter<Movie, AdapterMovie.MovieHolder>(MovieDiffUtilCallback()) {
 
     class MovieDiffUtilCallback: DiffUtil.ItemCallback<Movie>(){
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
@@ -27,11 +28,15 @@ class AdapterMovie(): ListAdapter<Movie, AdapterMovie.MovieHolder>(MovieDiffUtil
 
         private val titleTVH = binding.titleTV
         private val yearTVH = binding.yearTV
+        private var posterIVH = binding.posterIV
 
         fun bind(movie: Movie){
             titleTVH.text = movie.title
             yearTVH.text = movie.year.toString()
 
+            Glide.with(itemView)
+                .load("https://www.kinogallery.com/images/inception/kinogallery.com-inception-40841.jpg")
+                .into(posterIVH)
         }
     }
 

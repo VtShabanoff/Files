@@ -13,12 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="request movie" />
-    <TextView
-        android:id="@+id/mlsTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="mls"
-        android:textColor="@color/black"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieRecyclerView"
