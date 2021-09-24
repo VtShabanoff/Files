@@ -28,11 +28,10 @@ class ThreadingFragment : Fragment(R.layout.fragment_threading) {
         movieViewModel.movies
             .observe(viewLifecycleOwner){ newMovies ->
                 movieAdapter.updateMovie(newMovies)
-                Log.d("TAG", "конечный список=${newMovies}")
             }
         initRecyclerView()
     }
-    fun initRecyclerView(){
+    private fun initRecyclerView(){
         movieAdapter = AdapterMovie()
         with(binding.movieRecyclerView){
             adapter = movieAdapter

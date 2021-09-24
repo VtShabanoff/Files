@@ -25,15 +25,16 @@
     </fragment>
     <fragment
         android:id="@+id/deadlockFragment"
-        android:name="com.skillbox.multithreading.DeadlockFragment"
+        android:name="com.skillbox.multithreading.threading.DeadlockFragment"
         android:label="DeadlockFragment" />
     <fragment
         android:id="@+id/livelockFragment"
-        android:name="com.skillbox.multithreading.LivelockFragment"
+        android:name="com.skillbox.multithreading.threading.LivelockFragment"
         android:label="LivelockFragment" />
     <fragment
         android:id="@+id/raceConditionFragment"
-        android:name="com.skillbox.multithreading.RaceConditionFragment"
+        tools:layout="@layout/fragment_race_condition"
+        android:name="com.skillbox.multithreading.threading.RaceConditionFragment"
         android:label="RaceConditionFragment" />
     <fragment
         android:id="@+id/threadingFragment"

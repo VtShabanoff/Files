@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Multithreading</string>
+    <string name="hint_thread_count">Enter thread count</string>
+    <string name="hint_increment_count">Enter increment count</string>
+    <string name="button_n">Button N</string>
+    <string name="button_m">Button_M</string>
 </resources>

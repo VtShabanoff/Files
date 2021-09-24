@@ -1,4 +1,4 @@
-package com.skillbox.multithreading
+package com.skillbox.multithreading.threading
 
 import androidx.fragment.app.Fragment
 
