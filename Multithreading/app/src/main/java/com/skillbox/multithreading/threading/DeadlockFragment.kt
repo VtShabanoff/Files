@@ -31,8 +31,8 @@ class DeadlockFragment: Fragment() {
         val thread2 = Thread {
             Log.d("Deadlock", "Start2")
             (0..1000000).forEach {
-                synchronized(lock2) {
-                    synchronized(lock1) {
+                synchronized(lock1) {
+                    synchronized(lock2) {
                         i++
                     }
                 }
@@ -41,8 +41,8 @@ class DeadlockFragment: Fragment() {
             Log.d("Deadlock", "End2")
         }
 
-        thread1.start()
-        thread2.start()
+            thread1.start()
+            thread2.start()
     }
 
 

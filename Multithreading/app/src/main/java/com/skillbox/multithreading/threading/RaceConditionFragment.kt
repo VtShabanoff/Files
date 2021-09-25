@@ -28,12 +28,14 @@ class RaceConditionFragment : Fragment(R.layout.fragment_race_condition) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         buttonN.setOnClickListener {
-            textView.text = incrementWithoutSynchronization(incrementCountET.text.toString().toInt(),
+            textView.text = incrementWithoutSynchronization(threadCountET.text.toString().toInt(),
                 incrementCountET.text.toString().toInt())
+            value = 0
         }
         buttonM.setOnClickListener {
-            textView.text = incrementWithSynchronization(incrementCountET.text.toString().toInt(),
+            textView.text = incrementWithSynchronization(threadCountET.text.toString().toInt(),
                 incrementCountET.text.toString().toInt())
+            value = 0
         }
     }
 
@@ -41,6 +43,7 @@ class RaceConditionFragment : Fragment(R.layout.fragment_race_condition) {
         threadCount: Int,
         incrementCount: Int): String{
         val expectedValue = value + threadCount * incrementCount
+        val startTime = System.currentTimeMillis()
          (0 until threadCount).map {
             Thread{
                 for(i in 0 until incrementCount){
@@ -50,13 +53,15 @@ class RaceConditionFragment : Fragment(R.layout.fragment_race_condition) {
                 start()
             }
         }.map { it.join() }
-        return "value = ${value}, expected=${expectedValue}"
+        val requestTime = System.currentTimeMillis() - startTime
+        return "value = ${value}, expected=${expectedValue}, request time=${requestTime}"
     }
 
     private fun incrementWithSynchronization(
         threadCount: Int,
         incrementCount: Int): String{
         val expectedValue = value + threadCount * incrementCount
+        val startTime = System.currentTimeMillis()
         (0 until threadCount).map {
             Thread{
                 synchronized(this){
@@ -69,7 +74,8 @@ class RaceConditionFragment : Fragment(R.layout.fragment_race_condition) {
                 start()
             }
         }.map { it.join() }
-        return "value = ${value}, expected=${expectedValue}"
+        val requestTime = System.currentTimeMillis() - startTime
+        return "value = ${value}, expected=${expectedValue}, request time=${requestTime}"
     }
 
 }

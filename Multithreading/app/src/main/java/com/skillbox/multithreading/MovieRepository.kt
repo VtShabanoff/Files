@@ -23,8 +23,8 @@ class MovieRepository {
                     allMovies.addAll(fMovies)
                 }
             }
-            threads.forEach { it.start() }
-            threads.forEach { it.join() }
+              threads.forEach { it.start() }
+              threads.forEach { it.join() }
             onMoviesFetched(allMovies)
         }.start()
     }
