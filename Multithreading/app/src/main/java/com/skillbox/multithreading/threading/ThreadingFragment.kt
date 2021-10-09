@@ -1,8 +1,11 @@
 package com.skillbox.multithreading.threading
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +22,7 @@ class ThreadingFragment : Fragment(R.layout.fragment_threading) {
     private val binding by viewBinding(FragmentThreadingBinding::bind)
     private val movieViewModel: MovieViewModel by viewModels()
     private var movieAdapter by AutoClearedValue<AdapterMovie>()
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,7 +31,13 @@ class ThreadingFragment : Fragment(R.layout.fragment_threading) {
         }
         movieViewModel.movies
             .observe(viewLifecycleOwner){ newMovies ->
-                movieAdapter.updateMovie(newMovies)
+                mainHandler.post {
+                    movieAdapter.updateMovie(newMovies)
+                }
+                mainHandler.postDelayed({
+                    Toast.makeText(requireContext(), "Список Обновлен", Toast.LENGTH_LONG)
+                        .show()
+                }, 1000)
             }
         initRecyclerView()
     }
