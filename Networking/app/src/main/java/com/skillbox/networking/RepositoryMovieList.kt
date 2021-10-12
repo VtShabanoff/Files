@@ -15,12 +15,13 @@ class RepositoryMovieList {
         text: String,
         year: String,
         type: String,
-        callback: (List<Movie>) -> Unit
+        callback: (List<Movie>) -> Unit,
+        callbackError: (String, Boolean) -> Unit
     ): Call {
         return NetWork.getSearchMovieCall(text, year, type).apply {
             enqueue(object: Callback{
                 override fun onFailure(call: Call, e: IOException) {
-                    callback(emptyList())
+                    e.message?.let { callbackError(it, true) }
                 }
 
                 override fun onResponse(call: Call, response: Response) {

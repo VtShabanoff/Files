@@ -21,7 +21,7 @@ class ListMovieFragment: Fragment(R.layout.fragment_list_movie) {
         setMovieTypesMenu()
         initRecyclerViewListMovie()
         bindViewModel()
-
+        setMessageError()
 
     }
 
@@ -56,6 +56,26 @@ class ListMovieFragment: Fragment(R.layout.fragment_list_movie) {
         viewModel.isLoadingListMovie.observe(viewLifecycleOwner, ::updateIsLoadingMovies)
         viewModel.movies.observe(viewLifecycleOwner){adapterMovie.updateMovie(it)}
 
+    }
+
+    private fun setMessageError(){
+        var selectedType = ""
+
+        binding.autoCompleteTV.setOnItemClickListener { adapterView, _, i,_ ->
+            selectedType = adapterView.getItemAtPosition(i).toString()
+        }
+        binding.buttonRequest.setOnClickListener {
+            binding.errorTV.isVisible = false
+            val queryText = binding.editTextSearchByName.text.toString()
+            val queryYear = binding.editTextSearchByYear.text.toString()
+            viewModel.search(queryText, queryYear, selectedType)
+        }
+        viewModel.massageError.observe(viewLifecycleOwner){messageError ->
+            binding.errorTV.text = messageError
+        }
+        viewModel.isMessage.observe(viewLifecycleOwner){ isError ->
+            binding.errorTV.isVisible = isError
+        }
     }
 
     private fun updateIsLoadingMovies(isLoading: Boolean){
