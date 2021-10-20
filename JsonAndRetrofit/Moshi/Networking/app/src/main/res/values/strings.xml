@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Networking</string>
+    <string name="hint_name_movie_edit_t">Enter name movie</string>
+    <string name="hint_year_movie_edit_t">Enter year movie</string>
+    <string name="movie_menu_title">Movie</string>
+    <string name="series_menu_title">Series</string>
+    <string name="episode_menu_title">Episode</string>
+    <string name="search_by_type">Types</string>
+
+    <string-array name="movie_types">
+        <item>Movie</item>
+        <item>Series</item>
+        <item>Episode</item>
+    </string-array>
+
+</resources>
