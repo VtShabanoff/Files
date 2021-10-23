@@ -14,13 +14,13 @@ object NetWork {
             .setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
-    fun getSearchMovieCall(text: String, year: String, type: String): Call {
+    fun getSearchMovieCall(title: String, year: String, type: String): Call {
         //http://www.omdbapi.com/?apikey=[yourkey]&s=
 
         val url = HttpUrl.Builder()
             .scheme("http")
             .host("www.omdbapi.com")
-            .addQueryParameter("s", text)
+            .addQueryParameter("t", title)
             .addQueryParameter("type", type)
             .addQueryParameter("y", year)
             .build()

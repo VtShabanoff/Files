@@ -24,17 +24,25 @@ class AdapterMovieList: ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDi
         binding: ItemListMovieBinding
     ): RecyclerView.ViewHolder(binding.root){
 
-        private val idTVH = binding.textViewId
         private val titleTVH = binding.textViewTitle
         private val yearTVH = binding.textViewYear
+        private val genreTVH = binding.textViewGenre
+        private val ratedTVH = binding.textViewRating
         private val typeTVH = binding.textViewType
         private val posterIMH = binding.posterIV
+        private val ratingsTVH = binding.textViewAppraisals
 
         fun bind(movie: Movie){
-            idTVH.text = movie.id
+
             titleTVH.text = movie.title
-            yearTVH.text = movie.year
+            yearTVH.text = movie.year.toString()
+            genreTVH.text = movie.genre
+            ratedTVH.text = movie.rated.toString()
             typeTVH.text = movie.type
+            ratingsTVH.text = movie.ratings.joinToString(
+                separator = "\n"
+            )
+
             Glide.with(itemView)
                 .load(movie.poster)
                 .error(R.drawable.icon_poster_error)

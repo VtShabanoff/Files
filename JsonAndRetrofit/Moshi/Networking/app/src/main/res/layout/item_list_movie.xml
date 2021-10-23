@@ -21,25 +21,12 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/textViewId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            tools:text="id"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp"/>
-
-        <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:text="Title"/>
 
@@ -49,8 +36,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="14sp"
             tools:text="Year"/>
+
+        <TextView
+            android:id="@+id/textViewGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="Genre"/>
 
         <TextView
             android:id="@+id/textViewType"
@@ -60,6 +56,24 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             tools:text="Type"/>
+
+        <TextView
+            android:id="@+id/textViewRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="Rating"/>
+
+        <TextView
+            android:id="@+id/textViewAppraisals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="appraisals"/>
 
     </LinearLayout>
 

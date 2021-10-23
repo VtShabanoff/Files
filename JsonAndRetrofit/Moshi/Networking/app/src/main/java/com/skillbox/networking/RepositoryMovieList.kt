@@ -1,25 +1,23 @@
 package com.skillbox.networking
 
-import android.util.Log
 import com.skillbox.networking.networking.NetWork
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.IOException
 
 class RepositoryMovieList {
 
     fun searchMovie(
-        text: String,
+        title: String,
         year: String,
         type: String,
         callback: (List<Movie>) -> Unit,
         callbackError: (String, Boolean) -> Unit
     ): Call {
-        return NetWork.getSearchMovieCall(text, year, type).apply {
+        return NetWork.getSearchMovieCall(title, year, type).apply {
             enqueue(object: Callback{
                 override fun onFailure(call: Call, e: IOException) {
                     e.message?.let { callbackError(it, true) }
@@ -41,6 +39,7 @@ class RepositoryMovieList {
 
     fun parseMovieResponse(responseString: String): List<Movie> {
         val moshi = Moshi.Builder().build()
+
         val adapter = moshi.adapter(Movie::class.java).nonNull()
         val movie = adapter.fromJson(responseString) ?: error("error parsing from response")
         return listOf(movie)
