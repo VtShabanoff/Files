@@ -20,7 +20,7 @@ object NetWork {
         val url = HttpUrl.Builder()
             .scheme("http")
             .host("www.omdbapi.com")
-            .addQueryParameter("t", title)
+            .addQueryParameter("s", title)
             .addQueryParameter("type", type)
             .addQueryParameter("y", year)
             .build()

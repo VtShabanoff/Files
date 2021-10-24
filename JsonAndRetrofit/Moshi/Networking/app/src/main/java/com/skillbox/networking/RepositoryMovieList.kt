@@ -40,9 +40,14 @@ class RepositoryMovieList {
     fun parseMovieResponse(responseString: String): List<Movie> {
         val moshi = Moshi.Builder().build()
 
-        val adapter = moshi.adapter(Movie::class.java).nonNull()
-        val movie = adapter.fromJson(responseString) ?: error("error parsing from response")
-        return listOf(movie)
+        val arrayJsonMovies = Types.newParameterizedType(
+                    List::class.java,
+                    Movie::class.java
+                )
+
+        val adapter = moshi.adapter<List<Movie>>(arrayJsonMovies).nonNull()
+        val search = adapter.fromJson(responseString) ?: error("error parsing from response")
+        return search
     }
 
 //    private fun parseMovieResponse(responseString: String): List<Movie>{
