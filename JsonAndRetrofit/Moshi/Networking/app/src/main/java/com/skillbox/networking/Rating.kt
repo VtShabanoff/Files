@@ -4,7 +4,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Search(
-    @Json(name = "Search")
-    val movies: List<Movie>
+data class Rating(
+    @Json(name = "Source")
+    val source: String,
+    @Json(name = "Value")
+    val rating: String
 )

@@ -35,11 +35,11 @@ class AdapterMovieList: ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDi
         fun bind(movie: Movie){
 
             titleTVH.text = movie.title
-            yearTVH.text = movie.year.toString()
+            yearTVH.text = movie.year
             genreTVH.text = movie.genre
             ratedTVH.text = movie.rated.toString()
             typeTVH.text = movie.type
-            ratingsTVH.text = movie.ratings.joinToString(
+            ratingsTVH.text = movie.ratings.map{"${it.key} = ${it.value}"}.joinToString(
                 separator = "\n"
             )
 

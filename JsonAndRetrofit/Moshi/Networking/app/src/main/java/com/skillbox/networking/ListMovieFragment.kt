@@ -1,20 +1,29 @@
 package com.skillbox.networking
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.skillbox.networking.databinding.FragmentListMovieBinding
+import com.skillbox.networking.extensions.getNavigationResult
 
-class ListMovieFragment: Fragment(R.layout.fragment_list_movie) {
+class ListMovieFragment : Fragment(R.layout.fragment_list_movie) {
     private val binding by viewBinding(FragmentListMovieBinding::class.java)
     private var adapterMovie by AutoClearedValue<AdapterMovieList>()
     private val viewModel: ViewModelMovieList by viewModels()
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -22,28 +31,31 @@ class ListMovieFragment: Fragment(R.layout.fragment_list_movie) {
         initRecyclerViewListMovie()
         bindViewModel()
         setMessageError()
+        binding.buttonRatings.setOnClickListener {
+
+        }
 
     }
 
-    private fun setMovieTypesMenu(){
+    private fun setMovieTypesMenu() {
         val movieTypes = resources.getStringArray(R.array.movie_types)
         val adapter = ArrayAdapter(requireContext(), R.layout.item_list, movieTypes)
         binding.autoCompleteTV.setAdapter(adapter)
     }
 
-    private fun initRecyclerViewListMovie(){
+    private fun initRecyclerViewListMovie() {
         adapterMovie = AdapterMovieList()
-        with(binding.recyclerViewListMovie){
+        with(binding.recyclerViewListMovie) {
             adapter = adapterMovie
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
     }
 
-    private fun bindViewModel(){
+    private fun bindViewModel() {
         var selectedType = ""
 
-        binding.autoCompleteTV.setOnItemClickListener { adapterView, _, i,_ ->
+        binding.autoCompleteTV.setOnItemClickListener { adapterView, _, i, _ ->
             selectedType = adapterView.getItemAtPosition(i).toString()
         }
 
@@ -54,14 +66,14 @@ class ListMovieFragment: Fragment(R.layout.fragment_list_movie) {
         }
 
         viewModel.isLoadingListMovie.observe(viewLifecycleOwner, ::updateIsLoadingMovies)
-        viewModel.movies.observe(viewLifecycleOwner){adapterMovie.updateMovie(it)}
+        viewModel.movies.observe(viewLifecycleOwner) { adapterMovie.updateMovie(it) }
 
     }
 
-    private fun setMessageError(){
+    private fun setMessageError() {
         var selectedType = ""
 
-        binding.autoCompleteTV.setOnItemClickListener { adapterView, _, i,_ ->
+        binding.autoCompleteTV.setOnItemClickListener { adapterView, _, i, _ ->
             selectedType = adapterView.getItemAtPosition(i).toString()
         }
         binding.buttonRequest.setOnClickListener {
@@ -70,19 +82,50 @@ class ListMovieFragment: Fragment(R.layout.fragment_list_movie) {
             val queryYear = binding.editTextSearchByYear.text.toString()
             viewModel.search(queryText, queryYear, selectedType)
         }
-        viewModel.massageError.observe(viewLifecycleOwner){messageError ->
+        viewModel.massageError.observe(viewLifecycleOwner) { messageError ->
             binding.errorTV.text = messageError
         }
-        viewModel.isMessage.observe(viewLifecycleOwner){ isError ->
+        viewModel.isMessage.observe(viewLifecycleOwner) { isError ->
             binding.errorTV.isVisible = isError
         }
     }
 
-    private fun updateIsLoadingMovies(isLoading: Boolean){
+    private fun updateIsLoadingMovies(isLoading: Boolean) {
         binding.recyclerViewListMovie.isVisible = isLoading.not()
         binding.buttonSearch.isEnabled = isLoading.not()
         binding.progressBar.isVisible = isLoading
     }
 
+    private fun setCustomRatings() {
+        val navController = findNavController()
+        val navBackStackEntry = navController.getBackStackEntry(R.id.listMovieFragment)
 
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME
+                && navBackStackEntry.savedStateHandle.contains(KEY_RATINGS)
+            ) {
+
+                val rating = getNavigationResult<String>(KEY_RATINGS)
+                    ?: throw Exception("no model args")
+            }
+            if (event == Lifecycle.Event.ON_CREATE) {
+                navBackStackEntry.savedStateHandle.remove<String>(KEY_RATINGS)
+            }
+        }
+        navBackStackEntry.lifecycle.addObserver(observer)
+
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                navBackStackEntry.lifecycle.removeObserver(observer)
+                navBackStackEntry.savedStateHandle.remove<String>(KEY_RATINGS)
+            }
+        })
+    }
+
+    companion object {
+        const val KEY_RATINGS = "key_ratings"
+    }
+
+    private fun showDialogRating(){
+    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
@@ -9,5 +10,21 @@
         android:id="@+id/listMovieFragment"
         android:name="com.skillbox.networking.ListMovieFragment"
         tools:layout="@layout/fragment_list_movie"
-        android:label="ListMovieFragment" />
+        android:label="ListMovieFragment" >
+        <action
+            android:id="@+id/action_listMovieFragment_to_dialogFragmentRating"
+            app:destination="@id/dialogFragmentRating" />
+        <argument
+            android:name="rating"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/dialogFragmentRating"
+        android:name="com.skillbox.networking.dialogs.DialogFragmentRating"
+        android:label="DialogFragmentRating" >
+        <action
+            android:id="@+id/action_dialogFragmentRating_to_listMovieFragment"
+            app:destination="@id/listMovieFragment" />
+    </dialog>
+
 </navigation>

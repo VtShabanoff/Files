@@ -14,7 +14,6 @@ import com.skillbox.car.setNavigationResult
 import com.skillbox.car.withArguments
 
 class DialogCreateVehicle: DialogFragment() {
-   private val vehicleViewModel: VehicleListViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 

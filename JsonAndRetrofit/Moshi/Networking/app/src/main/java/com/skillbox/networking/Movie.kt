@@ -10,15 +10,15 @@ data class Movie(
     @Json(name = "Title")
     val title: String,
     @Json(name = "Year")
-    val year: Int,
+    val year: String,
     @Json(name = "Rated")
-    val rated: RatedEnum,
+    val rated: RatedEnum = RatedEnum.NA,
     @Json(name = "Genre")
-    val genre: String,
+    val genre: String?,
     @Json(name = "Type")
     val type: String,
     @Json(name = "Poster")
     val poster: String,
     @Json(name = "Ratings")
-    val ratings: List<Ratings>
+    val ratings: Map<String, String>
 )
