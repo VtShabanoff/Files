@@ -14,10 +14,8 @@
         <action
             android:id="@+id/action_listMovieFragment_to_dialogFragmentRating"
             app:destination="@id/dialogFragmentRating" />
-        <argument
-            android:name="rating"
-            app:argType="string" />
     </fragment>
+
     <dialog
         android:id="@+id/dialogFragmentRating"
         android:name="com.skillbox.networking.dialogs.DialogFragmentRating"
@@ -25,6 +23,9 @@
         <action
             android:id="@+id/action_dialogFragmentRating_to_listMovieFragment"
             app:destination="@id/listMovieFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
     </dialog>
 
 </navigation>

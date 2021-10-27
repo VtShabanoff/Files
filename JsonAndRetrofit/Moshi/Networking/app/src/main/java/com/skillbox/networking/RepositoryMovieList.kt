@@ -2,6 +2,7 @@ package com.skillbox.networking
 
 import com.skillbox.networking.networking.NetWork
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.ToJson
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
@@ -44,6 +45,19 @@ class RepositoryMovieList {
         val adapter = moshi.adapter(Movie::class.java).nonNull()
         val movie = adapter.fromJson(responseString)?: error("error parsing from response")
         return listOf(movie)
+    }
+
+    fun getRatedMovie(movies: List<Movie>, id: String, rating: String): Movie{
+        val movie =  movies.find { it.id == id } ?: throw Exception("movie by id not find")
+        return movie.copy(ratings = movie.ratings.plus(Pair("Ваша оценка", rating)))
+    }
+
+    fun serializeMovieToJson(movie: Movie): String{
+        val moshi = Moshi.Builder()
+            .add(CustomAdapterRatings())
+            .build()
+        val adapter = moshi.adapter(Movie::class.java).nonNull()
+        return adapter.toJson(movie)?: error("error parsing from response")
     }
 
 //    private fun parseMovieResponse(responseString: String): List<Movie>{

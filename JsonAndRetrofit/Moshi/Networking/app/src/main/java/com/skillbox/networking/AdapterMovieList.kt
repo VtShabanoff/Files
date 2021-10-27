@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.skillbox.networking.databinding.ItemListMovieBinding
 
-class AdapterMovieList: ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDiffUtilCallback()) {
+class AdapterMovieList(
+    private val onItemClick: (id: String) -> Unit
+): ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDiffUtilCallback()) {
 
     class MovieDiffUtilCallback: DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
@@ -21,7 +23,8 @@ class AdapterMovieList: ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDi
     }
 
     class MovieHolder(
-        binding: ItemListMovieBinding
+        binding: ItemListMovieBinding,
+        onItemClick: (id: String) -> Unit
     ): RecyclerView.ViewHolder(binding.root){
 
         private val titleTVH = binding.textViewTitle
@@ -31,9 +34,15 @@ class AdapterMovieList: ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDi
         private val typeTVH = binding.textViewType
         private val posterIMH = binding.posterIV
         private val ratingsTVH = binding.textViewAppraisals
+        private lateinit var id: String
+
+        init {
+            binding.root.setOnClickListener { onItemClick(id) }
+        }
 
         fun bind(movie: Movie){
 
+            id = movie.id
             titleTVH.text = movie.title
             yearTVH.text = movie.year
             genreTVH.text = movie.genre
@@ -52,7 +61,7 @@ class AdapterMovieList: ListAdapter<Movie, AdapterMovieList.MovieHolder>(MovieDi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         return MovieHolder(ItemListMovieBinding.inflate(LayoutInflater.from(parent.context),
-            parent, false))
+            parent, false), onItemClick)
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {

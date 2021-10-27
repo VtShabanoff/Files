@@ -32,6 +32,7 @@ class VehicleRepository {
         } ?: vehicles.find {
             (it as Vehicle.ElectricCar).id == id
         }
+
         val positionVehicle = vehicles.indexOf(findByIdVehicle)
 
         return vehicles.filter{

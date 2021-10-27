@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -21,7 +22,7 @@ import com.skillbox.networking.extensions.getNavigationResult
 class ListMovieFragment : Fragment(R.layout.fragment_list_movie) {
     private val binding by viewBinding(FragmentListMovieBinding::class.java)
     private var adapterMovie by AutoClearedValue<AdapterMovieList>()
-    private val viewModel: ViewModelMovieList by viewModels()
+    private val viewModel: ViewModelMovieList by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,10 +32,6 @@ class ListMovieFragment : Fragment(R.layout.fragment_list_movie) {
         initRecyclerViewListMovie()
         bindViewModel()
         setMessageError()
-        binding.buttonRatings.setOnClickListener {
-
-        }
-
     }
 
     private fun setMovieTypesMenu() {
@@ -44,7 +41,14 @@ class ListMovieFragment : Fragment(R.layout.fragment_list_movie) {
     }
 
     private fun initRecyclerViewListMovie() {
-        adapterMovie = AdapterMovieList()
+        adapterMovie = AdapterMovieList{ id ->
+            val dialog =
+                ListMovieFragmentDirections.actionListMovieFragmentToDialogFragmentRating(id)
+            findNavController().navigate(dialog)
+
+
+        }
+
         with(binding.recyclerViewListMovie) {
             adapter = adapterMovie
             layoutManager = LinearLayoutManager(requireContext())
@@ -96,36 +100,4 @@ class ListMovieFragment : Fragment(R.layout.fragment_list_movie) {
         binding.progressBar.isVisible = isLoading
     }
 
-    private fun setCustomRatings() {
-        val navController = findNavController()
-        val navBackStackEntry = navController.getBackStackEntry(R.id.listMovieFragment)
-
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME
-                && navBackStackEntry.savedStateHandle.contains(KEY_RATINGS)
-            ) {
-
-                val rating = getNavigationResult<String>(KEY_RATINGS)
-                    ?: throw Exception("no model args")
-            }
-            if (event == Lifecycle.Event.ON_CREATE) {
-                navBackStackEntry.savedStateHandle.remove<String>(KEY_RATINGS)
-            }
-        }
-        navBackStackEntry.lifecycle.addObserver(observer)
-
-        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_DESTROY) {
-                navBackStackEntry.lifecycle.removeObserver(observer)
-                navBackStackEntry.savedStateHandle.remove<String>(KEY_RATINGS)
-            }
-        })
-    }
-
-    companion object {
-        const val KEY_RATINGS = "key_ratings"
-    }
-
-    private fun showDialogRating(){
-    }
 }
