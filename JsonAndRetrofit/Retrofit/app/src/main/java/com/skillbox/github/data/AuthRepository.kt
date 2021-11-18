@@ -39,6 +39,7 @@ class AuthRepository {
                 response != null -> {
                     //TODO save access token
                     val accessToken = response.accessToken.orEmpty()
+                    Token.saveToken(accessToken)
                     onComplete()
                 }
                 else -> onError()

@@ -22,6 +22,10 @@ android {
         ]
     }
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -89,5 +93,8 @@ dependencies {
 
     //AppAuth
     implementation 'net.openid:appauth:0.7.1'
+
+    //Kirich view binding
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.0-beta01'
 
 }
