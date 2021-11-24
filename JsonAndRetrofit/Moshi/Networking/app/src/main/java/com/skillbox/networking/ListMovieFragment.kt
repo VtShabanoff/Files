@@ -45,8 +45,6 @@ class ListMovieFragment : Fragment(R.layout.fragment_list_movie) {
             val dialog =
                 ListMovieFragmentDirections.actionListMovieFragmentToDialogFragmentRating(id)
             findNavController().navigate(dialog)
-
-
         }
 
         with(binding.recyclerViewListMovie) {

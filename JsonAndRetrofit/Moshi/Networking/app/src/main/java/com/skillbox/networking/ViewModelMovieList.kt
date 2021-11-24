@@ -9,7 +9,7 @@ import okhttp3.Call
 class ViewModelMovieList : ViewModel() {
     private val repository = RepositoryMovieList()
 
-    var currentCall: Call? = null
+    private var currentCall: Call? = null
     private var moviesVM: List<Movie>? = null
 
     private val moviesLiveData = MutableLiveData<List<Movie>>()

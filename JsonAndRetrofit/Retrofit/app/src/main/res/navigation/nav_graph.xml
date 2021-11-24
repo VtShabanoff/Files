@@ -35,5 +35,23 @@
     <fragment
         android:id="@+id/repositoryListFragment"
         android:name="com.skillbox.github.ui.repository_list.RepositoryListFragment"
-        android:label="RepositoryListFragment" />
+        android:label="RepositoryListFragment"
+        tools:layout="@layout/fragment_list_repository">
+        <action
+            android:id="@+id/action_repositoryListFragment_to_detailedUserFragment"
+            app:destination="@id/detailedUserFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/detailedUserFragment"
+        android:name="com.skillbox.github.ui.repository_list.DetailedUserFragment"
+        android:label="DetailedUserFragment"
+        tools:layout="@layout/fragment_detailed_user">
+        <argument
+            android:name="nameOwner"
+            app:argType="string"/>
+        <argument
+            android:name="nameRepo"
+            app:argType="string"/>
+    </fragment>
 </navigation>
