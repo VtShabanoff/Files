@@ -22,33 +22,67 @@ class DetailedInfoUserViewModel : ViewModel() {
     private val _errorMessageIsStarred = MutableLiveData<String>()
     val errorMessageIsStarred: LiveData<String>
         get() = _errorMessageIsStarred
+    private val _setStarred = MutableLiveData<Boolean>()
+    val setStarred: LiveData<Boolean>
+        get() = _setStarred
+    private val _deleteStarred = MutableLiveData<Boolean>()
+    val deleteStarred: LiveData<Boolean>
+        get() = _deleteStarred
+    private val _errorMessageSetStarred = MutableLiveData<String>()
+    val errorMessageSetStarred: LiveData<String>
+        get() = _errorMessageSetStarred
+    private val _errorMessageDeleteStarred = MutableLiveData<String>()
+    val errorMessageDeleteStarred: LiveData<String>
+        get() = _errorMessageDeleteStarred
 
-    private var currentCall: Call<RemoteRepository>? = null
+    private var currentCallForDetailedInfo: Call<RemoteRepository>? = null
     private var currentCallIsStarred: Call<Unit>? = null
+    private var currentCallSetStarred: Call<Unit>? = null
+    private var currentCallDeleteStarred: Call<Unit>? = null
 
     fun getDetailedInfo(ownerLogin: String, repoName: String) {
-        currentCall = repository.getDetailedInfo(ownerLogin, repoName,
+        currentCallForDetailedInfo = repository.getDetailedInfo(ownerLogin, repoName,
             { remoteRepository ->
                 _detailedInfo.postValue(remoteRepository)
             }) {
             _errorMessage.postValue(it.message)
         }
-        currentCall = null
+        currentCallForDetailedInfo = null
 
     }
 
-    fun isStarred(ownerLogin: String, repoName: String){
+    fun isStarred(ownerLogin: String, repoName: String) {
         currentCallIsStarred = repository.isStarred(ownerLogin, repoName, { isStarred ->
             _isStarred.postValue(isStarred)
-        }){
+        }) {
             _errorMessageIsStarred.postValue(it.message)
         }
         currentCallIsStarred = null
     }
 
+    fun setStarred(ownerLogin: String, repoName: String) {
+        currentCallSetStarred = repository.setStarred(ownerLogin, repoName, { isSetStarred ->
+            _setStarred.postValue(isSetStarred)
+        }, {
+            _errorMessageSetStarred.postValue(it.message)
+        })
+        currentCallSetStarred = null
+    }
+
+    fun deleteStarred(ownerLogin: String, repoName: String) {
+        currentCallDeleteStarred =
+            repository.deleteStarred(ownerLogin, repoName, { isDeleteStarred ->
+                _deleteStarred.postValue(isDeleteStarred)
+            }, {
+                _errorMessageDeleteStarred.postValue(it.message)
+            })
+    }
+
     override fun onCleared() {
         super.onCleared()
-        currentCall = null
+        currentCallForDetailedInfo = null
         currentCallIsStarred = null
+        currentCallSetStarred = null
+        currentCallDeleteStarred =null
     }
 }

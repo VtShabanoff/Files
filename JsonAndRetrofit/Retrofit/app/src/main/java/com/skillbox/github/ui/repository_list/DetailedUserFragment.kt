@@ -20,6 +20,8 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
         super.onViewCreated(view, savedInstanceState)
         bindViewModelDetailedIfo()
         bindViewModelIsStarred()
+        bindViewModelSetStarred()
+        bindViewModelDetailedStarred()
     }
 
     private fun bindViewModelDetailedIfo() {
@@ -36,7 +38,7 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
         viewModel.getDetailedInfo(args.nameOwner, args.nameRepo)
     }
 
-    private fun bindViewModelIsStarred(){
+    private fun bindViewModelIsStarred() {
         viewModel.isStarred.observe(viewLifecycleOwner) { isStarred ->
             binding.starYellowIV.isVisible = isStarred
             binding.starEmptyIV.isVisible = !isStarred
@@ -45,6 +47,40 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
             isError(message)
         }
         viewModel.isStarred(args.nameOwner, args.nameRepo)
+    }
+
+    private fun bindViewModelSetStarred() {
+        viewModel.setStarred.observe(viewLifecycleOwner) { isSetStarred ->
+            binding.starEmptyIV.run {
+                isVisible = !isSetStarred
+                setOnClickListener {
+                    viewModel.setStarred(args.nameOwner, args.nameRepo)
+                }
+            }
+            binding.starYellowIV.run {
+                isVisible = isSetStarred
+                setOnClickListener {
+                    viewModel.deleteStarred(args.nameOwner, args.nameRepo)
+                }
+            }
+        }
+    }
+
+    private fun bindViewModelDetailedStarred() {
+        viewModel.deleteStarred.observe(viewLifecycleOwner) { isDeleteStarred ->
+            binding.starYellowIV.run {
+                isVisible = !isDeleteStarred
+                setOnClickListener {
+                    viewModel.deleteStarred(args.nameOwner, args.nameRepo)
+                }
+            }
+            binding.starEmptyIV.run {
+                isVisible = isDeleteStarred
+                setOnClickListener {
+                    viewModel.setStarred(args.nameOwner, args.nameRepo)
+                }
+            }
+        }
     }
 
     private fun isError(message: String) {

@@ -63,4 +63,62 @@ class RepositoryDetailedInfoUser {
                 }
             )
         }
+
+    fun setStarred(
+        ownerLogin: String,
+        repoName: String,
+        onComplete: (Boolean) -> Unit,
+        onError: (Throwable) -> Unit
+    ): Call<Unit> =
+        Networking.gitHubApi.isStarred(ownerLogin, repoName).apply {
+            enqueue(
+                object : Callback<Unit> {
+
+                    override fun onResponse(
+                        call: Call<Unit>,
+                        response: Response<Unit>
+                    ) {
+                        when (response.code()) {
+                            204 -> onComplete(true)
+                            404 -> onComplete(false)
+                            else -> onError(RuntimeException("incorrect status code"))
+                        }
+                        Log.d("setStarred", "response.code() = ${response.code()}")
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        onError(t)
+                    }
+                }
+            )
+        }
+
+    fun deleteStarred(
+        ownerLogin: String,
+        repoName: String,
+        onComplete: (Boolean) -> Unit,
+        onError: (Throwable) -> Unit
+    ): Call<Unit> =
+        Networking.gitHubApi.isStarred(ownerLogin, repoName).apply {
+            enqueue(
+                object : Callback<Unit> {
+
+                    override fun onResponse(
+                        call: Call<Unit>,
+                        response: Response<Unit>
+                    ) {
+                        when (response.code()) {
+                            204 -> onComplete(true)
+                            404 -> onComplete(false)
+                            else -> onError(RuntimeException("incorrect status code"))
+                        }
+                        Log.d("deleteStarred", "response.code() = ${response.code()}")
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        onError(t)
+                    }
+                }
+            )
+        }
 }
