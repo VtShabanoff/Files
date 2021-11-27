@@ -1,6 +1,7 @@
 package com.skillbox.github.ui.repository_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.skillbox.github.R
+import com.skillbox.github.data.RemoteRepository
 import com.skillbox.github.databinding.FragmentDetailedUserBinding
 
 class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
@@ -18,75 +20,55 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindViewModelDetailedIfo()
-        bindViewModelIsStarred()
-        bindViewModelSetStarred()
-        bindViewModelDetailedStarred()
+
+        getDetailedInfo()
+        observeViewModelState()
     }
 
-    private fun bindViewModelDetailedIfo() {
-        viewModel.detailedInfo.observe(viewLifecycleOwner) { remoteRepository ->
-            binding.textView.text = remoteRepository.owner.nameOwner
-            Glide.with(binding.root)
-                .load(remoteRepository.owner.avatar)
-                .into(binding.avatarIV)
-
-        }
-        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
-            isError(message)
-        }
-        viewModel.getDetailedInfo(args.nameOwner, args.nameRepo)
-    }
-
-    private fun bindViewModelIsStarred() {
-        viewModel.isStarred.observe(viewLifecycleOwner) { isStarred ->
-            binding.starYellowIV.isVisible = isStarred
-            binding.starEmptyIV.isVisible = !isStarred
-        }
-        viewModel.errorMessageIsStarred.observe(viewLifecycleOwner) { message ->
-            isError(message)
-        }
+    private fun getDetailedInfo() {
         viewModel.isStarred(args.nameOwner, args.nameRepo)
-    }
+        viewModel.getDetailedInfo(args.nameOwner, args.nameRepo)
 
-    private fun bindViewModelSetStarred() {
-        viewModel.setStarred.observe(viewLifecycleOwner) { isSetStarred ->
-            binding.starEmptyIV.run {
-                isVisible = !isSetStarred
-                setOnClickListener {
-                    viewModel.setStarred(args.nameOwner, args.nameRepo)
-                }
-            }
-            binding.starYellowIV.run {
-                isVisible = isSetStarred
-                setOnClickListener {
-                    viewModel.deleteStarred(args.nameOwner, args.nameRepo)
-                }
-            }
-        }
-    }
-
-    private fun bindViewModelDetailedStarred() {
-        viewModel.deleteStarred.observe(viewLifecycleOwner) { isDeleteStarred ->
-            binding.starYellowIV.run {
-                isVisible = !isDeleteStarred
-                setOnClickListener {
-                    viewModel.deleteStarred(args.nameOwner, args.nameRepo)
-                }
-            }
-            binding.starEmptyIV.run {
-                isVisible = isDeleteStarred
-                setOnClickListener {
-                    viewModel.setStarred(args.nameOwner, args.nameRepo)
-                }
-            }
-        }
     }
 
     private fun isError(message: String) {
         binding.avatarIV.isVisible = false
-        binding.starEmptyIV.isVisible = false
-        binding.starYellowIV.isVisible = false
+        binding.starIV.isVisible = false
         binding.textView.text = message
+    }
+
+    private fun bindData(isStarred: Boolean, remoteRepository: RemoteRepository) {
+        binding.textView.text = remoteRepository.owner.nameOwner
+        Glide.with(binding.root)
+            .load(remoteRepository.owner.avatar)
+            .into(binding.avatarIV)
+
+        binding.starIV.run {
+            setImageResource(R.drawable.ic_yellow_star)
+            setOnClickListener {
+                viewModel.deleteStarred(args.nameOwner, args.nameRepo)
+            }
+        }.takeIf {
+            isStarred
+        } ?: binding.starIV.run {
+            setImageResource(R.drawable.ic_gray_star)
+            setOnClickListener {
+                viewModel.setStarred(args.nameOwner, args.nameRepo)
+            }
+        }
+    }
+
+    private fun observeViewModelState() {
+
+        viewModel.isStarred.observe(viewLifecycleOwner) { isStarred ->
+            Log.d("zvezda", "isStarred? = $isStarred")
+            viewModel.detailedInfo.observe(viewLifecycleOwner) { remoteRepo ->
+                bindData(isStarred, remoteRepo)
+            }
+        }
+
+        viewModel.errorMessageIsStarred.observe(viewLifecycleOwner) { message ->
+            isError(message)
+        }
     }
 }

@@ -70,7 +70,7 @@ class RepositoryDetailedInfoUser {
         onComplete: (Boolean) -> Unit,
         onError: (Throwable) -> Unit
     ): Call<Unit> =
-        Networking.gitHubApi.isStarred(ownerLogin, repoName).apply {
+        Networking.gitHubApi.setStarred(ownerLogin, repoName).apply {
             enqueue(
                 object : Callback<Unit> {
 
@@ -99,7 +99,7 @@ class RepositoryDetailedInfoUser {
         onComplete: (Boolean) -> Unit,
         onError: (Throwable) -> Unit
     ): Call<Unit> =
-        Networking.gitHubApi.isStarred(ownerLogin, repoName).apply {
+        Networking.gitHubApi.deleteStarred(ownerLogin, repoName).apply {
             enqueue(
                 object : Callback<Unit> {
 

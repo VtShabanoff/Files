@@ -10,6 +10,7 @@ import retrofit2.Call
 class DetailedInfoUserViewModel : ViewModel() {
 
     private val repository = RepositoryDetailedInfoUser()
+
     private val _detailedInfo = MutableLiveData<RemoteRepository>()
     val detailedInfo: LiveData<RemoteRepository>
         get() = _detailedInfo
