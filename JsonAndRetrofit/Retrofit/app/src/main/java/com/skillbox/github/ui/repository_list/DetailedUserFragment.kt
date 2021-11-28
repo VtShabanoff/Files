@@ -43,23 +43,22 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
             .load(remoteRepository.owner.avatar)
             .into(binding.avatarIV)
 
-        binding.starIV.run {
-            setImageResource(R.drawable.ic_yellow_star)
-            setOnClickListener {
-                viewModel.deleteStarred(args.nameOwner, args.nameRepo)
-            }
-        }.takeIf {
-            isStarred
-        } ?: binding.starIV.run {
-            setImageResource(R.drawable.ic_gray_star)
-            setOnClickListener {
-                viewModel.setStarred(args.nameOwner, args.nameRepo)
+        if (isStarred) {
+            binding.starIV.setImageResource(R.drawable.ic_yellow_star)
+        } else {
+            binding.starIV.setImageResource(R.drawable.ic_gray_star)
+        }
+
+        binding.starIV.setOnClickListener {
+            if (isStarred) {
+                setYellowStar(args.nameOwner, args.nameRepo)
+            } else {
+                setGrayStar(args.nameOwner, args.nameRepo)
             }
         }
     }
 
     private fun observeViewModelState() {
-
         viewModel.isStarred.observe(viewLifecycleOwner) { isStarred ->
             Log.d("zvezda", "isStarred? = $isStarred")
             viewModel.detailedInfo.observe(viewLifecycleOwner) { remoteRepo ->
@@ -70,5 +69,20 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
         viewModel.errorMessageIsStarred.observe(viewLifecycleOwner) { message ->
             isError(message)
         }
+        viewModel.setStarred.observe(viewLifecycleOwner) { setStarred ->
+            if (setStarred) binding.starIV.setImageResource(R.drawable.ic_gray_star)
+        }
+        viewModel.deleteStarred.observe(viewLifecycleOwner) { delete ->
+            if (delete) binding.starIV.setImageResource(R.drawable.ic_yellow_star)
+        }
+    }
+
+    private fun setYellowStar(nameOwner: String, nameRepo: String){
+        binding.starIV.setImageResource(R.drawable.ic_yellow_star)
+        viewModel.setStarred(nameOwner, nameRepo)
+    }
+    private fun setGrayStar(nameOwner: String, nameRepo: String){
+        binding.starIV.setImageResource(R.drawable.ic_gray_star)
+        viewModel.deleteStarred(nameOwner, nameRepo)
     }
 }
