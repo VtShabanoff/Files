@@ -109,7 +109,6 @@ class RepositoryDetailedInfoUser {
                     ) {
                         when (response.code()) {
                             204 -> onComplete(true)
-                            404 -> onComplete(false)
                             else -> onError(RuntimeException("incorrect status code"))
                         }
                         Log.d("deleteStarred", "response.code() = ${response.code()}")

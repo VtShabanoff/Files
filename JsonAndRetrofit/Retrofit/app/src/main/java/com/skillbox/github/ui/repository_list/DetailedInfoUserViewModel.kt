@@ -23,12 +23,6 @@ class DetailedInfoUserViewModel : ViewModel() {
     private val _errorMessageIsStarred = MutableLiveData<String>()
     val errorMessageIsStarred: LiveData<String>
         get() = _errorMessageIsStarred
-    private val _setStarred = MutableLiveData<Boolean>()
-    val setStarred: LiveData<Boolean>
-        get() = _setStarred
-    private val _deleteStarred = MutableLiveData<Boolean>()
-    val deleteStarred: LiveData<Boolean>
-        get() = _deleteStarred
     private val _errorMessageSetStarred = MutableLiveData<String>()
     val errorMessageSetStarred: LiveData<String>
         get() = _errorMessageSetStarred
@@ -49,7 +43,6 @@ class DetailedInfoUserViewModel : ViewModel() {
             _errorMessage.postValue(it.message)
         }
         currentCallForDetailedInfo = null
-
     }
 
     fun isStarred(ownerLogin: String, repoName: String) {
@@ -62,8 +55,8 @@ class DetailedInfoUserViewModel : ViewModel() {
     }
 
     fun setStarred(ownerLogin: String, repoName: String) {
-        currentCallSetStarred = repository.setStarred(ownerLogin, repoName, { isSetStarred ->
-            _setStarred.postValue(isSetStarred)
+        currentCallSetStarred = repository.setStarred(ownerLogin, repoName, { isStarred ->
+            _isStarred.postValue(isStarred)
         }, {
             _errorMessageSetStarred.postValue(it.message)
         })
@@ -72,11 +65,12 @@ class DetailedInfoUserViewModel : ViewModel() {
 
     fun deleteStarred(ownerLogin: String, repoName: String) {
         currentCallDeleteStarred =
-            repository.deleteStarred(ownerLogin, repoName, { isDeleteStarred ->
-                _deleteStarred.postValue(isDeleteStarred)
+            repository.deleteStarred(ownerLogin, repoName, { isStarred ->
+                _isStarred.postValue(!isStarred)
             }, {
                 _errorMessageDeleteStarred.postValue(it.message)
             })
+        currentCallDeleteStarred = null
     }
 
     override fun onCleared() {
@@ -84,6 +78,6 @@ class DetailedInfoUserViewModel : ViewModel() {
         currentCallForDetailedInfo = null
         currentCallIsStarred = null
         currentCallSetStarred = null
-        currentCallDeleteStarred =null
+        currentCallDeleteStarred = null
     }
 }

@@ -18,16 +18,12 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
     private val binding by viewBinding(FragmentDetailedUserBinding::class.java)
     private val viewModel: DetailedInfoUserViewModel by viewModels()
     private val args by navArgs<DetailedUserFragmentArgs>()
-    private var isStarredF = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         getDetailedInfo()
         observeViewModelState()
-        bindStar()
-        Log.d("isStarredF", "isStarredF = $isStarredF")
     }
 
     private fun getDetailedInfo() {
@@ -49,26 +45,26 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
             .into(binding.avatarIV)
     }
 
-    private fun bindStar(){
-        if (isStarredF) {
-            binding.starIV.setImageResource(R.drawable.ic_yellow_star)
-        } else {
-            binding.starIV.setImageResource(R.drawable.ic_gray_star)
-        }
-
-        binding.starIV.setOnClickListener {
-            if (isStarredF) {
-                setYellowStar(args.nameOwner, args.nameRepo)
-            } else {
-                setGrayStar(args.nameOwner, args.nameRepo)
+    private fun bindStar(isStarred: Boolean){
+        binding.starIV.run {
+            setImageResource(R.drawable.ic_yellow_star)
+            setOnClickListener {
+                viewModel.deleteStarred(args.nameOwner, args.nameRepo)
+            }.takeIf { isStarred } ?: binding.starIV.run {
+                setImageResource(R.drawable.ic_gray_star)
+                setOnClickListener {
+                    viewModel.setStarred(args.nameOwner, args.nameRepo)
+                }
             }
         }
     }
 
     private fun observeViewModelState() {
         viewModel.isStarred.observe(viewLifecycleOwner) { isStarred ->
-
-            isStarredF = isStarred
+            bindStar(isStarred)
+        }
+        viewModel.errorMessage.observe(viewLifecycleOwner){
+            isError(it)
         }
         viewModel.detailedInfo.observe(viewLifecycleOwner) { remoteRepo ->
             bindRepo(remoteRepo)
@@ -76,20 +72,5 @@ class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
         viewModel.errorMessageIsStarred.observe(viewLifecycleOwner) { message ->
             isError(message)
         }
-        viewModel.setStarred.observe(viewLifecycleOwner) { setStarred ->
-            if (setStarred) binding.starIV.setImageResource(R.drawable.ic_gray_star)
-        }
-        viewModel.deleteStarred.observe(viewLifecycleOwner) { delete ->
-            if (delete) binding.starIV.setImageResource(R.drawable.ic_yellow_star)
-        }
-    }
-
-    private fun setYellowStar(nameOwner: String, nameRepo: String){
-        binding.starIV.setImageResource(R.drawable.ic_yellow_star)
-        viewModel.setStarred(nameOwner, nameRepo)
-    }
-    private fun setGrayStar(nameOwner: String, nameRepo: String){
-        binding.starIV.setImageResource(R.drawable.ic_gray_star)
-        viewModel.deleteStarred(nameOwner, nameRepo)
     }
 }
