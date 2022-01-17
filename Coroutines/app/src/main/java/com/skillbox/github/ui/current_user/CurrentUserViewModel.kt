@@ -20,10 +20,10 @@ class CurrentUserViewModel : ViewModel() {
     val errorMessage: LiveData<String>
         get() = _errorMessage
 
-    fun getUser() {
+    suspend fun getUser() {
         viewModelScope.launch {
             try {
-                repository.getUser()
+                _remoteUser.postValue(repository.getUser())
             } catch (e: Exception){
                 _errorMessage.postValue(e.message)
             }

@@ -40,7 +40,7 @@ class RepositoryDetailedInfoUser {
 //        }
 
     suspend fun isStarred(ownerLogin: String, repoName: String) =
-        Networking.gitHubApi.isStarred(ownerLogin, repoName)
+        Networking.gitHubApi.isStarred(ownerLogin, repoName).isSuccessful
 
 //    fun isStarred(
 //        ownerLogin: String,
@@ -72,7 +72,7 @@ class RepositoryDetailedInfoUser {
 //        }
 
     suspend fun setStarred(ownerLogin: String, repoName: String) =
-        Networking.gitHubApi.setStarred(ownerLogin, repoName)
+        Networking.gitHubApi.setStarred(ownerLogin, repoName).isSuccessful
 
 //    fun setStarred(
 //        ownerLogin: String,
@@ -104,7 +104,7 @@ class RepositoryDetailedInfoUser {
 //        }
 
     suspend fun deleteStarred(ownerLogin: String, repoName: String) =
-        Networking.gitHubApi.deleteStarred(ownerLogin, repoName)
+        Networking.gitHubApi.deleteStarred(ownerLogin, repoName).isSuccessful
 
 //    fun deleteStarred(
 //        ownerLogin: String,

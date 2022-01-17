@@ -5,11 +5,13 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.skillbox.github.R
 import com.skillbox.github.databinding.FragmentListRepositoryBinding
+import kotlinx.coroutines.launch
 
 class RepositoryListFragment : Fragment(R.layout.fragment_list_repository) {
 
@@ -53,5 +55,4 @@ class RepositoryListFragment : Fragment(R.layout.fragment_list_repository) {
         }
         viewModel.getRepositories()
     }
-
 }

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.skillbox.github.R
 import com.skillbox.github.databinding.FragmentCurrentUserBinding
+import kotlinx.coroutines.launch
 
 class CurrentUserFragment : Fragment(R.layout.fragment_current_user) {
     private val binding by viewBinding(FragmentCurrentUserBinding::class.java)
@@ -27,6 +29,8 @@ class CurrentUserFragment : Fragment(R.layout.fragment_current_user) {
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             binding.nameTV.text = errorMessage
         }
-        viewModel.getUser()
+        lifecycleScope.launch {
+            viewModel.getUser()
+        }
     }
 }

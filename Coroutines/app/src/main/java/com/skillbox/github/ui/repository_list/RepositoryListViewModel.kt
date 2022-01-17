@@ -3,8 +3,10 @@ package com.skillbox.github.ui.repository_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.skillbox.github.data.RemoteRepository
 import com.skillbox.github.data.RepositoryListRepositories
+import kotlinx.coroutines.launch
 
 class RepositoryListViewModel : ViewModel() {
 
@@ -17,14 +19,14 @@ class RepositoryListViewModel : ViewModel() {
     val errorMessage: LiveData<String>
         get() = _errorMessage
 
-    fun getRepositories(){
-        repository.getRepositories(
-            {
-                _repositories.postValue(it)
-            },
-            {
-                _errorMessage.postValue(it.message)
+    fun getRepositories() {
+        viewModelScope.launch {
+            try {
+                _repositories.postValue(repository.getRepositories())
+            }catch (e: Exception){
+                _errorMessage.postValue(e.message)
             }
-        )
+
+        }
     }
 }

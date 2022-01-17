@@ -16,12 +16,15 @@ class DetailedInfoUserViewModel : ViewModel() {
     private val _detailedInfo = MutableLiveData<RemoteRepository>()
     val detailedInfo: LiveData<RemoteRepository>
         get() = _detailedInfo
+
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String>
         get() = _errorMessage
+
     private val _isStarred = MutableLiveData<Boolean>()
     val isStarred: LiveData<Boolean>
         get() = _isStarred
+
     private val _errorMessageIsStarred = MutableLiveData<String>()
     val errorMessageIsStarred: LiveData<String>
         get() = _errorMessageIsStarred
@@ -32,32 +35,43 @@ class DetailedInfoUserViewModel : ViewModel() {
     val errorMessageDeleteStarred: LiveData<String>
         get() = _errorMessageDeleteStarred
 
-    private var currentCallForDetailedInfo: Call<RemoteRepository>? = null
-    private var currentCallIsStarred: Call<Unit>? = null
-    private var currentCallSetStarred: Call<Unit>? = null
-    private var currentCallDeleteStarred: Call<Unit>? = null
-
-    suspend fun getDetailedInfo(ownerLogin: String, repoName: String) {
+    fun getDetailedInfo(ownerLogin: String, repoName: String) {
         viewModelScope.launch {
-            repository.getDetailedInfo(ownerLogin, repoName)
+            try {
+                _detailedInfo.postValue(repository.getDetailedInfo(ownerLogin, repoName))
+            } catch (e: Exception) {
+                _errorMessage.postValue(e.message)
+            }
         }
     }
 
-    suspend fun isStarred(ownerLogin: String, repoName: String) {
+    fun isStarred(ownerLogin: String, repoName: String) {
         viewModelScope.launch {
-            repository.isStarred(ownerLogin, repoName)
+            try {
+                _isStarred.postValue(repository.isStarred(ownerLogin, repoName))
+            } catch (e: Exception) {
+                _errorMessageIsStarred.postValue(e.message)
+            }
         }
     }
 
-    suspend fun setStarred(ownerLogin: String, repoName: String) {
+    fun deleteStarred(ownerLogin: String, repoName: String) {
         viewModelScope.launch {
-            repository.setStarred(ownerLogin, repoName)
+            try {
+                _isStarred.postValue(!repository.deleteStarred(ownerLogin, repoName))
+            }catch (e: Exception){
+                _errorMessageDeleteStarred.postValue(e.message)
+            }
         }
     }
 
-    suspend fun deleteStarred(ownerLogin: String, repoName: String) {
+    fun setStarred(ownerLogin: String, repoName: String){
         viewModelScope.launch {
-            repository.deleteStarred(ownerLogin, repoName)
+            try {
+                _isStarred.postValue(repository.setStarred(ownerLogin, repoName))
+            }catch (e: Exception){
+                _errorMessageSetStarred.postValue(e.message)
+            }
         }
     }
 }
