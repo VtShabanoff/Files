@@ -1,4 +1,4 @@
-package com.skillbox.github.ui.repository_list
+package com.skillbox.github.ui.detailed_info_item
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skillbox.github.data.RemoteRepository
 import com.skillbox.github.data.RepositoryDetailedInfoUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 
@@ -28,12 +30,6 @@ class DetailedInfoUserViewModel : ViewModel() {
     private val _errorMessageIsStarred = MutableLiveData<String>()
     val errorMessageIsStarred: LiveData<String>
         get() = _errorMessageIsStarred
-    private val _errorMessageSetStarred = MutableLiveData<String>()
-    val errorMessageSetStarred: LiveData<String>
-        get() = _errorMessageSetStarred
-    private val _errorMessageDeleteStarred = MutableLiveData<String>()
-    val errorMessageDeleteStarred: LiveData<String>
-        get() = _errorMessageDeleteStarred
 
     fun getDetailedInfo(ownerLogin: String, repoName: String) {
         viewModelScope.launch {
@@ -60,7 +56,7 @@ class DetailedInfoUserViewModel : ViewModel() {
             try {
                 _isStarred.postValue(!repository.deleteStarred(ownerLogin, repoName))
             }catch (e: Exception){
-                _errorMessageDeleteStarred.postValue(e.message)
+                _errorMessageIsStarred.postValue(e.message)
             }
         }
     }
@@ -70,7 +66,7 @@ class DetailedInfoUserViewModel : ViewModel() {
             try {
                 _isStarred.postValue(repository.setStarred(ownerLogin, repoName))
             }catch (e: Exception){
-                _errorMessageSetStarred.postValue(e.message)
+                _errorMessageIsStarred.postValue(e.message)
             }
         }
     }

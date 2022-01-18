@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailedUserFragment"
-        android:name="com.skillbox.github.ui.repository_list.DetailedUserFragment"
+        android:name="com.skillbox.github.ui.detailed_info_item.DetailedUserFragment"
         android:label="DetailedUserFragment"
         tools:layout="@layout/fragment_detailed_user">
         <argument

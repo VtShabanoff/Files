@@ -23,10 +23,10 @@ interface GitHubApi {
     ): RemoteRepository
 
     @GET("/user/starred/{owner}/{repo}")
-    suspend fun isStarred(
+    fun isStarred(
         @Path("owner") ownerLogin: String,
         @Path("repo") repoName: String
-    ):Response<Boolean>
+    ):Call<Unit>
 
     @PUT("/user/starred/{owner}/{repo}")
     suspend fun setStarred(

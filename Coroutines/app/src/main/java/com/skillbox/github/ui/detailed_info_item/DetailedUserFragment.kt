@@ -1,20 +1,16 @@
-package com.skillbox.github.ui.repository_list
+package com.skillbox.github.ui.detailed_info_item
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.skillbox.github.R
 import com.skillbox.github.data.RemoteRepository
 import com.skillbox.github.databinding.FragmentDetailedUserBinding
-import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 class DetailedUserFragment : Fragment(R.layout.fragment_detailed_user) {
     private val binding by viewBinding(FragmentDetailedUserBinding::class.java)
