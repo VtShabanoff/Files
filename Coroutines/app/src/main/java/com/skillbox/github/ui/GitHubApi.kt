@@ -1,5 +1,6 @@
 package com.skillbox.github.ui
 
+import com.skillbox.github.data.FollowingUser
 import com.skillbox.github.data.RemoteRepository
 import com.skillbox.github.data.RemoteUser
 import retrofit2.Call
@@ -12,6 +13,9 @@ import retrofit2.http.Path
 interface GitHubApi {
     @GET("/user")
     suspend fun getUser(): RemoteUser
+
+    @GET("/user/following")
+    suspend fun getUserListFollowing():List<FollowingUser>
 
     @GET("/repositories")
     suspend fun getRepositories(): List<RemoteRepository>

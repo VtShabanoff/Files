@@ -29,8 +29,12 @@ class CurrentUserFragment : Fragment(R.layout.fragment_current_user) {
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
             binding.nameTV.text = errorMessage
         }
+        viewModel.followingUser.observe(viewLifecycleOwner) { followingUsers ->
+            binding.tvFollowingUsers.text = followingUsers.joinToString("\n")
+        }
+
         lifecycleScope.launch {
-            viewModel.getUser()
+            viewModel.getUserAndUserListFollowing()
         }
     }
 }
