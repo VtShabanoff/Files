@@ -36,11 +36,11 @@ interface GitHubApi {
     suspend fun setStarred(
         @Path("owner") ownerLogin: String,
         @Path("repo") repoName: String
-    ):Response<Boolean>
+    ): Response<Unit>
 
     @DELETE("/user/starred/{owner}/{repo}")
     suspend fun deleteStarred(
         @Path("owner") ownerLogin: String,
         @Path("repo") repoName: String
-    ):Response<Boolean>
+    ): Response<Unit>
 }

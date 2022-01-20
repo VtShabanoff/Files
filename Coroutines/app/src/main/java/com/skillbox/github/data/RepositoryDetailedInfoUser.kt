@@ -12,35 +12,6 @@ class RepositoryDetailedInfoUser {
     suspend fun getDetailedInfo(ownerLogin: String, repoName: String): RemoteRepository =
         Networking.gitHubApi.getDetailedInfo(ownerLogin, repoName)
 
-//    fun getDetailedInfo(
-//        ownerLogin: String,
-//        repoName: String,
-//        onComplete: (RemoteRepository) -> Unit,
-//        onError: (Throwable) -> Unit
-//    ): Call<RemoteRepository> =
-//        Networking.gitHubApi.getDetailedInfo(ownerLogin, repoName).apply {
-//            enqueue(
-//                object : Callback<RemoteRepository> {
-//
-//                    override fun onResponse(
-//                        call: Call<RemoteRepository>,
-//                        response: Response<RemoteRepository>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            response.body()?.let { onComplete(it) }
-//                            Log.d("onDetailedInfo", "response.body() = ${response.body()}")
-//                        } else {
-//                            onError(RuntimeException("incorrect status code"))
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<RemoteRepository>, t: Throwable) {
-//                        onError(t)
-//                    }
-//                }
-//            )
-//        }
-
     suspend fun isStarred(ownerLogin: String, repoName: String): Boolean {
         var call: Call<Unit>? = null
 
@@ -74,97 +45,10 @@ class RepositoryDetailedInfoUser {
         }
     }
 
-
-//    fun isStarred(
-//        ownerLogin: String,
-//        repoName: String,
-//        onComplete: (Boolean) -> Unit,
-//        onError: (Throwable) -> Unit
-//    ): Call<Unit> =
-//        Networking.gitHubApi.isStarred(ownerLogin, repoName).apply {
-//            enqueue(
-//                object : Callback<Unit> {
-//
-//                    override fun onResponse(
-//                        call: Call<Unit>,
-//                        response: Response<Unit>
-//                    ) {
-//                        when (response.code()) {
-//                            204 -> onComplete(true)
-//                            404 -> onComplete(false)
-//                            else -> onError(RuntimeException("incorrect status code"))
-//                        }
-//                        Log.d("isStarred", "response.code() = ${response.code()}")
-//                    }
-//
-//                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-//                        onError(t)
-//                    }
-//                }
-//            )
-//        }
-
     suspend fun setStarred(ownerLogin: String, repoName: String) =
-        Networking.gitHubApi.setStarred(ownerLogin, repoName).isSuccessful
-
-//    fun setStarred(
-//        ownerLogin: String,
-//        repoName: String,
-//        onComplete: (Boolean) -> Unit,
-//        onError: (Throwable) -> Unit
-//    ): Call<Unit> =
-//        Networking.gitHubApi.setStarred(ownerLogin, repoName).apply {
-//            enqueue(
-//                object : Callback<Unit> {
-//
-//                    override fun onResponse(
-//                        call: Call<Unit>,
-//                        response: Response<Unit>
-//                    ) {
-//                        when (response.code()) {
-//                            204 -> onComplete(true)
-//                            404 -> onComplete(false)
-//                            else -> onError(RuntimeException("incorrect status code"))
-//                        }
-//                        Log.d("setStarred", "response.code() = ${response.code()}")
-//                    }
-//
-//                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-//                        onError(t)
-//                    }
-//                }
-//            )
-//        }
+        Networking.gitHubApi.setStarred(ownerLogin, repoName).code() == 204
 
     suspend fun deleteStarred(ownerLogin: String, repoName: String) =
-        Networking.gitHubApi.deleteStarred(ownerLogin, repoName).isSuccessful
+        Networking.gitHubApi.deleteStarred(ownerLogin, repoName).code() == 204
 
-
-//    fun deleteStarred(
-//        ownerLogin: String,
-//        repoName: String,
-//        onComplete: (Boolean) -> Unit,
-//        onError: (Throwable) -> Unit
-//    ): Call<Unit> =
-//        Networking.gitHubApi.deleteStarred(ownerLogin, repoName).apply {
-//            enqueue(
-//                object : Callback<Unit> {
-//
-//                    override fun onResponse(
-//                        call: Call<Unit>,
-//                        response: Response<Unit>
-//                    ) {
-//                        when (response.code()) {
-//                            204 -> onComplete(true)
-//                            else -> onError(RuntimeException("incorrect status code"))
-//                        }
-//                        Log.d("deleteStarred", "response.code() = ${response.code()}")
-//                    }
-//
-//                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-//                        onError(t)
-//                    }
-//                }
-//            )
-//        }
 }
