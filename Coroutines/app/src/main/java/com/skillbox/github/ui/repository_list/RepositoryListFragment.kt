@@ -26,6 +26,7 @@ class RepositoryListFragment : Fragment(R.layout.fragment_list_repository) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initViewModel()
+
     }
 
     private fun initRecyclerView() {

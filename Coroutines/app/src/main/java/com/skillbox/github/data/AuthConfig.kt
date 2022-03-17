@@ -10,6 +10,6 @@ object AuthConfig {
     const val SCOPE = "user,repo"
 
     const val CLIENT_ID = "d36346da1b998188354e"
-    const val CLIENT_SECRET = "afcd49e1be9ed50375a3a99f4557141155cf7c01"
+    const val CLIENT_SECRET = "здесь свой секретный токен из гит хаб"
     const val CALLBACK_URL = "skillbox://skillbox.ru/callback"
 }

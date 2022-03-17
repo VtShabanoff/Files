@@ -63,10 +63,8 @@ dependencies {
     //RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.hannesdorfmann:adapterdelegates4:4.3.0'
-
-    def lifecycleVersion = '2.4.0'
-
     //ViewModel
+    def lifecycleVersion = '2.4.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.fragment:fragment-ktx:1.4.0"
     //LiveData
