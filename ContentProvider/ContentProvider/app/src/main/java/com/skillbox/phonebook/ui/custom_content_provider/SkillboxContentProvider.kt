@@ -116,6 +116,7 @@ class SkillboxContentProvider : ContentProvider() {
 
         val user = User(id, name, age)
 
+
         userPrefs.edit()
             .putString(id.toString(), userAdapter.toJson(user))
             .apply()
