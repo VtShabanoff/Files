@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Phone Book</string>
-    <string name="add_new_contact">Add new contact</string>
-    <string name="name_hint">Name</string>
-    <string name="phone_number_hint">+79887776644</string>
-    <string name="save_contact_btn">save contact</string>
-</resources>

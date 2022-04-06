@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Phone Book</string>
+    <string name="add_new_contact">Add new contact</string>
+    <string name="name_hint">Name</string>
+    <string name="phone_number_hint">Phone Number</string>
+    <string name="save_contact_btn">save contact</string>
+    <string name="email_hint">Email</string>
+    <string name="delete_contact_button">delete</string>
+    <string name="family_name_hint">Family Name</string>
+</resources>

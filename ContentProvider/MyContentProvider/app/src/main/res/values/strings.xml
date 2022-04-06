@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestMyProvider</string>
+    <string name="enter_title">Enter title</string>
+    <string name="add_new_course">add new course</string>
+</resources>

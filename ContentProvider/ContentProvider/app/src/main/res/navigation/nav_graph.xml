@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/contactsFragment">
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.skillbox.phonebook.ui.ContactsFragment"
+        android:label="ContactsFragment" >
+        <action
+            android:id="@+id/action_contactsFragment_to_detailedInfoContactFragment"
+            app:destination="@id/detailedInfoContactFragment" />
+        <action
+            android:id="@+id/action_contactsFragment_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedInfoContactFragment"
+        android:name="com.skillbox.phonebook.ui.AddContactFragment"
+        android:label="DetailedInfoContactFragment" >
+        <action
+            android:id="@+id/action_detailedInfoContactFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userInfoFragment"
+        android:name="com.skillbox.phonebook.ui.UserInfoFragment"
+        android:label="UserInfoFragment" >
+        <action
+            android:id="@+id/action_userInfoFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
+</navigation>
