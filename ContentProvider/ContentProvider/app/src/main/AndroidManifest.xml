@@ -21,10 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+    </application>
+
+    <queries>
         <provider
             android:authorities="${applicationId}.provider"
             android:exported="true"
             android:name=".ui.custom_content_provider.SkillboxContentProvider"/>
-    </application>
+    </queries>
 
 </manifest>

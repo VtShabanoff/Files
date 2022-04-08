@@ -7,9 +7,10 @@ import android.net.Uri
 import com.skillbox.testmyprovider.domain.Course
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.random.Random
 
 class RepositoryContentImpl(val app: Application) {
+
+    private var myId = 0
 
     suspend fun updateCourseById(id: Long): Int =
         withContext(Dispatchers.IO) {
@@ -42,7 +43,8 @@ class RepositoryContentImpl(val app: Application) {
 
         val courses = mutableListOf<Course>()
         do {
-            val idIndex = cursor.getColumnIndex(COLUMN_COURSE_ID)
+            val idIndex = myId + 1
+//                cursor.getColumnIndex(COLUMN_COURSE_ID)
             val id = cursor.getLong(idIndex)
 
             val titleIndex = cursor.getColumnIndex(COLUMN_COURSE_TITLE)
