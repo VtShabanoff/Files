@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class RepositoryContentImpl(val app: Application) {
 
-    private var myId = 0
+    private var myId = 0L
 
     suspend fun updateCourseById(id: Long): Int =
         withContext(Dispatchers.IO) {
@@ -45,7 +45,7 @@ class RepositoryContentImpl(val app: Application) {
         do {
             val idIndex = myId + 1
 //                cursor.getColumnIndex(COLUMN_COURSE_ID)
-            val id = cursor.getLong(idIndex)
+            val id = cursor.getLong(idIndex.toInt())
 
             val titleIndex = cursor.getColumnIndex(COLUMN_COURSE_TITLE)
             val title = cursor.getString(titleIndex)
@@ -103,9 +103,9 @@ class RepositoryContentImpl(val app: Application) {
 
     suspend fun addCourse(title: String) =
         withContext(Dispatchers.IO) {
-            val courseId = COURSES_URI_ID.lastPathSegment?.toLongOrNull()
-                ?: error("Error getting raw contact ID")
+            val courseId = myId + 1
             saveCourseTitle(courseId, title)
+            myId = courseId
         }
 
 
@@ -124,7 +124,7 @@ class RepositoryContentImpl(val app: Application) {
     }
 
     companion object {
-        private const val URI = "content://SkillboxContentProvider"
+        private const val URI = "content://com.skillbox.phonebook.provider"
         private const val TYPE_URI = "/courses"
         private const val TYPE_URI_ID = "/courses/#"
 
