@@ -24,7 +24,7 @@
     </application>
 
     <queries>
-        <provider android:authorities="com.skillbox.phonebook.provider"/>
+        <package android:name="com.skillbox.phonebook.provider"/>
     </queries>
 
 </manifest>
