@@ -23,6 +23,11 @@ class VehicleListViewModel: ViewModel() {
             .postValue(vehicleRepository.deleteVehicle(vehiclesLiveData.value.orEmpty(), id))
 
         showToastMutableLiveData.postValue(Unit)
+
+
+
+
+
     }
 
     fun addVehicle(modelCar: String, makeCar: String, isElectricCar: Boolean){
