@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/usersFragment">
+    app:startDestination="@id/userFragment">
 
     <fragment
-        android:id="@+id/usersFragment"
-        android:name="com.skillbox.messageapp.ui.user_ui.UsersFragment"
-        android:label="UsersFragment" >
+        android:id="@+id/userFragment"
+        android:name="com.skillbox.roomdao.presintation.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_user">
         <action
-            android:id="@+id/action_usersFragment_to_contactsFragment"
+            android:id="@+id/action_userFragment_to_contactsFragment"
             app:destination="@id/contactsFragment" />
     </fragment>
     <fragment
         android:id="@+id/contactsFragment"
-        android:name="com.skillbox.messageapp.ui.contact_ui.ContactsFragment"
-        android:label="ContactsFragment" />
+        android:name="com.skillbox.roomdao.presintation.contacts.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" />
 </navigation>
