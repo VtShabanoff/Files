@@ -38,7 +38,7 @@ abstract class MessengerDataBase : RoomDatabase() {
             }
 
             val db = Room.databaseBuilder(
-                context,
+                context.applicationContext,
                 MessengerDataBase::class.java,
                 DB_NAME
             ).build()

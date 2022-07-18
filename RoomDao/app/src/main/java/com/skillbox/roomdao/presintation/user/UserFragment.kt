@@ -1,6 +1,7 @@
 package com.skillbox.roomdao.presintation.user
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -30,16 +31,14 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
     private fun addUser() {
 
-        viewModel.addUser(EUser(0L, "Shabanov Vitaly"))
-
-        viewModel.addEmail(EEmail(0L, "shabanoff@ya.ru"))
-
         viewModel.getUserWithEmail()
 
         viewModel.usersWithEmail.observe(viewLifecycleOwner) {
             it.map { relation ->
                 name.text = relation.eUser.name
                 email.text = relation.eEmail.email
+                Log.d("contacts", "userName = ${relation.eUser.name}" +
+                        "emailName = ${relation.eEmail.email}")
 
             }
         }

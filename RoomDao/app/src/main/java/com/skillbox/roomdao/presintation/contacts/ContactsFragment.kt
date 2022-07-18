@@ -2,10 +2,8 @@ package com.skillbox.roomdao.presintation.contacts
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.skillbox.roomdao.R
@@ -24,26 +22,22 @@ class ContactsFragment : Fragment(R.layout.fragment_contacts) {
         initViewModel()
     }
 
-    private fun initViews(view: View){
+    private fun initViews(view: View) {
         recyclerView = view.findViewById(R.id.rvContacts)
     }
 
-    private fun initRV(){
+    private fun initRV() {
         adapterContacts = AdapterContacts()
         recyclerView.adapter = adapterContacts
         recyclerView.setHasFixedSize(true)
     }
 
-    private fun initViewModel(){
-        for (i in 0 until 10){
-            viewModel.addContact(EContact(0L, "Contact $i", userId = 1))
-        }
-
+    private fun initViewModel() {
         viewModel.getUserWithContacts()
 
-        viewModel.contacts.observe(viewLifecycleOwner){
-            adapterContacts.submitList(it)
-            Log.d("contacts", "contactsFragment=${it}")
+        viewModel.contacts.observe(viewLifecycleOwner) { contacts ->
+            adapterContacts.submitList(contacts)
+            Log.d("contacts", "contactsFragment=${contacts}")
         }
 
         viewModel.getAllContacts()

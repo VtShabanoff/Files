@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class ViewModelContacts(context: Application): AndroidViewModel(context) {
 
-    private val repositoryContacts = ContactsRepository(context)
+    private val repositoryContacts = ContactsRepository.getInstance()
     private val repositoryUser = UserRepository(context)
 
     private val _contacts = SingleLiveEvent<List<EContact>>() // создал чтобы проверить поведение списка контактов

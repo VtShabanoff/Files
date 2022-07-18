@@ -12,7 +12,7 @@ import com.skillbox.roomdao.data.user.repositories.UserRepository
 import kotlinx.coroutines.launch
 
 class ViewModerUser(context: Application) : AndroidViewModel(context) {
-    private val repository = UserRepository(context)
+    private val repository = UserRepository.getInstance()
 
     private val _usersWithEmail = MutableLiveData<List<EUserWithComponent>>()
     val usersWithEmail: LiveData<List<EUserWithComponent>> = _usersWithEmail
