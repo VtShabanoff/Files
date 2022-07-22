@@ -1,6 +1,7 @@
 package com.skillbox.roomdao.data.dao
 
 import androidx.room.*
+import com.skillbox.roomdao.data.entities.ContactWithGroups
 import com.skillbox.roomdao.data.entities.ContractContact
 import com.skillbox.roomdao.data.entities.EContact
 
@@ -17,4 +18,8 @@ interface ContactDao {
 
     @Query("SELECT * FROM ${ContractContact.TABLE_NAME}")
     suspend fun getAllContacts(): List<EContact>
+
+    @Transaction
+    @Query("SELECT * FROM ${ContractContact.TABLE_NAME}")
+    suspend fun getContactsWithGroups(): List<ContactWithGroups>
 }

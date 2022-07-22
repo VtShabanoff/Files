@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/contactsFragment"
-        android:name="com.skillbox.roomdao.presintation.contacts.ContactsFragment"
+        android:name="com.skillbox.roomdao.presintation.contacts_groups.ContainerContactsGroupsFragment"
         android:label="fragment_contacts"
-        tools:layout="@layout/fragment_contacts" />
+        tools:layout="@layout/fragment_contacts_groups" />
 </navigation>

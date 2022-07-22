@@ -1,7 +1,6 @@
 package com.skillbox.roomdao.presintation.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -13,8 +12,6 @@ import com.skillbox.roomdao.data.entities.EEmail
 import com.skillbox.roomdao.data.entities.EUser
 
 class UserFragment : Fragment(R.layout.fragment_user) {
-    //    private var _binding: FragmentUserBinding? = null
-//    private val binding: FragmentUserBinding = _binding!!
     private val viewModel by viewModels<ViewModerUser>()
     private lateinit var name: TextView
     private lateinit var email: TextView
@@ -25,28 +22,29 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         name = view.findViewById(R.id.tvUserName)
         email = view.findViewById(R.id.tvEmailUser)
         btn = view.findViewById(R.id.btnContacts)
-        addUser()
+        addUserWithEmail()
+        initData()
         navigateToContacts()
     }
 
-    private fun addUser() {
-
-        viewModel.getUserWithEmail()
-
+    private fun initData() {
         viewModel.usersWithEmail.observe(viewLifecycleOwner) {
             it.map { relation ->
                 name.text = relation.eUser.name
                 email.text = relation.eEmail.email
-                Log.d("contacts", "userName = ${relation.eUser.name}" +
-                        "emailName = ${relation.eEmail.email}")
-
             }
         }
     }
-private fun navigateToContacts(){
-    btn.setOnClickListener {
-        findNavController().navigate(R.id.action_userFragment_to_contactsFragment)
+
+    private fun navigateToContacts() {
+        btn.setOnClickListener {
+            findNavController().navigate(R.id.action_userFragment_to_contactsFragment)
+        }
     }
-}
+
+    private fun addUserWithEmail(){
+        viewModel.addUser(EUser(1, "Vitaly"))
+        viewModel.addEmail(EEmail(1, "vitaly@mail.ru"))
+    }
 
 }

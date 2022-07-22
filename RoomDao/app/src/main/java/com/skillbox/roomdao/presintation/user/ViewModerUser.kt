@@ -17,6 +17,10 @@ class ViewModerUser(context: Application) : AndroidViewModel(context) {
     private val _usersWithEmail = MutableLiveData<List<EUserWithComponent>>()
     val usersWithEmail: LiveData<List<EUserWithComponent>> = _usersWithEmail
 
+    init {
+        getUserWithEmail()
+    }
+
     fun getUser(id: Long){
         viewModelScope.launch {
             repository.getUser(id)

@@ -11,22 +11,15 @@ import kotlinx.coroutines.withContext
 
 class UserRepository(context: Application) {
 
-    companion object{
+    companion object {
         private var INSTANCE: UserRepository? = null
 
-        fun initialize(context: Application){
+        fun initialize(context: Application) {
             if (INSTANCE == null) INSTANCE = UserRepository(context)
         }
 
-        fun getInstance(): UserRepository{
+        fun getInstance(): UserRepository {
             return INSTANCE ?: throw IllegalStateException("UserRepository must be initialized")
-        }
-    }
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            EUser(0L, "Vitaly")
-            EEmail(0L, "vitaly@mail.ru")
         }
     }
 

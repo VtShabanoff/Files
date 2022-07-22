@@ -1,4 +1,4 @@
-package com.skillbox.roomdao.presintation.contacts
+package com.skillbox.roomdao.presintation.contacts_groups
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.skillbox.roomdao.data.entities.EContact
 import com.skillbox.roomdao.databinding.ItemContactBinding
+import kotlin.properties.Delegates
 
-class AdapterContacts :
+class AdapterContacts(
+    private val onItemClickContact: ((id: Long) -> Unit)
+) :
     ListAdapter<EContact, AdapterContacts.ViewHolderContacts>(DiffUtilContacts()) {
 
     class DiffUtilContacts : DiffUtil.ItemCallback<EContact>() {
@@ -21,9 +24,21 @@ class AdapterContacts :
         }
     }
 
-    class ViewHolderContacts(private val binding: ItemContactBinding) :
+    class ViewHolderContacts(
+        private val binding: ItemContactBinding,
+        onItemClickContact: (id: Long) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
+        private var idContact by Delegates.notNull<Long>()
+
+        init {
+            binding.root.setOnClickListener {
+                onItemClickContact(idContact)
+            }
+        }
+
         fun bind(eContact: EContact) {
+            idContact = eContact.id
             binding.tvContactName.text = eContact.name
         }
     }
@@ -32,7 +47,7 @@ class AdapterContacts :
         val binding =
             ItemContactBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return ViewHolderContacts(binding)
+        return ViewHolderContacts(binding, onItemClickContact)
     }
 
     override fun onBindViewHolder(holder: ViewHolderContacts, position: Int) {
