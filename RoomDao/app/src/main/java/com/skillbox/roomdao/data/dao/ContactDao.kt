@@ -21,5 +21,5 @@ interface ContactDao {
 
     @Transaction
     @Query("SELECT * FROM ${ContractContact.TABLE_NAME}")
-    suspend fun getContactsWithGroups(): List<ContactWithGroups>
+    suspend fun getContactWithGroups(): List<ContactWithGroups>
 }

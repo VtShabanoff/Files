@@ -1,19 +1,18 @@
 package com.skillbox.roomdao.presintation.contacts_groups
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.skillbox.roomdao.SingleLiveEvent
 import com.skillbox.roomdao.data.entities.ContactGroupCrossRef
+import com.skillbox.roomdao.data.entities.ContactWithGroups
 import com.skillbox.roomdao.data.entities.EContact
 import com.skillbox.roomdao.data.entities.EGroup
 import com.skillbox.roomdao.data.user.repositories.ContactsGroupsRepository
 import com.skillbox.roomdao.data.user.repositories.UserRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ViewModelContactsGroups(context: Application) : AndroidViewModel(context) {
 
@@ -26,6 +25,9 @@ class ViewModelContactsGroups(context: Application) : AndroidViewModel(context) 
 
     private val _groups = MutableLiveData<List<EGroup>>()
     val groups: LiveData<List<EGroup>> = _groups
+
+    private val _groupsByContacts = MutableLiveData<ContactWithGroups>()
+    val groupsByContacts: LiveData<ContactWithGroups> = _groupsByContacts
 
     init {
         getAllContacts()
@@ -101,22 +103,16 @@ class ViewModelContactsGroups(context: Application) : AndroidViewModel(context) 
         }
     }
 
-    fun getContactsWithGroupsByIdCrossRef(id: Long) {
+    fun getContactWithGroupsById(id: Long) {
         viewModelScope.launch {
-            repositoryContactsGroups.getContactsWithGroupsByIdCrossRef(id)
+            _groups.postValue(repositoryContactsGroups.getGroupsWithContactById(id).groups)
+
         }
     }
 
-    fun getContactWithItsGroupsByIdCrossRef(id: Long) {
+    fun getGroupWithContactsById(id: Long) {
         viewModelScope.launch {
-            repositoryContactsGroups.getContactWithItsGroupsByIdCrossRef(id)
-        }
-    }
-
-    fun getGroupWithItsContactsByIdCrossRef(id: Long) {
-        viewModelScope.launch {
-            repositoryContactsGroups.getGroupWithItsContactsByIdCrossRef(id)
-
+            _contacts.postValue(repositoryContactsGroups.getContactsWithGroupsById(id).contacts)
         }
     }
 }

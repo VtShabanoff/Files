@@ -15,6 +15,7 @@ import com.skillbox.roomdao.data.entities.EGroup
 class ContainerContactsGroupsFragment : Fragment(R.layout.fragment_contacts_groups) {
     private lateinit var rvContacts: RecyclerView
     private lateinit var rvGroups: RecyclerView
+    private lateinit var rvGroupsByContact: RecyclerView
     private lateinit var adapterContacts: AdapterContacts
     private lateinit var adapterGroups: AdapterGroups
     private val viewModel by viewModels<ViewModelContactsGroups>()
@@ -36,9 +37,11 @@ class ContainerContactsGroupsFragment : Fragment(R.layout.fragment_contacts_grou
 
     private fun initRV() {
         adapterContacts = AdapterContacts { id ->
-            viewModel.getContactWithItsGroupsByIdCrossRef(id)
+            viewModel.getContactWithGroupsById(id)
+            toast("on click Contact $id")
         }
         adapterGroups = AdapterGroups{
+            viewModel.getGroupWithContactsById(it)
             toast("on click group id $it")
         }
         rvContacts.adapter = adapterContacts
@@ -53,9 +56,13 @@ class ContainerContactsGroupsFragment : Fragment(R.layout.fragment_contacts_grou
             Log.d("contacts", "contactsFragment=${contacts}")
         }
 
-        viewModel.groups.observe(viewLifecycleOwner){
+        viewModel.groups.observe(viewLifecycleOwner) {
             adapterGroups.submitList(it)
             Log.d("contacts", "contactsFragment=${it}")
+        }
+
+        viewModel.groupsByContacts.observe(viewLifecycleOwner) {
+
         }
     }
 

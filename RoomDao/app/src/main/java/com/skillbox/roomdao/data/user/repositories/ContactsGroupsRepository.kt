@@ -1,7 +1,6 @@
 package com.skillbox.roomdao.data.user.repositories
 
 import android.app.Application
-import android.util.Log
 import com.skillbox.roomdao.data.db.MessengerDataBase
 import com.skillbox.roomdao.data.entities.*
 import kotlinx.coroutines.Dispatchers
@@ -60,9 +59,9 @@ class ContactsGroupsRepository(context: Application) {
             groupDao.getGroupById(id)
         }
 
-    suspend fun getContactWithGroups() {
-        withContext(io) {
-            contactsDao.getContactsWithGroups()
+    suspend fun getContactWithGroups(): List<ContactWithGroups> {
+        return withContext(io) {
+            contactsDao.getContactWithGroups()
         }
     }
 
@@ -78,23 +77,14 @@ class ContactsGroupsRepository(context: Application) {
         }
     }
 
-    suspend fun getContactsWithGroupsByIdCrossRef(id: Long) {
-        withContext(io) {
-            crossRefDao.getContactWithGroupsById(id)
-        }
-    }
-
-    suspend fun getContactWithItsGroupsByIdCrossRef(id: Long): ContactWithGroups {
-        Log.d("ContactAndGroups",
-            "contact name = ${crossRefDao.getContactWithGroupsById(id)}")
+    suspend fun getGroupsWithContactById(id: Long): ContactWithGroups {
         return withContext(io) {
             crossRefDao.getContactWithGroupsById(id)
 
         }
     }
 
-
-    suspend fun getGroupWithItsContactsByIdCrossRef(id: Long): GroupWithContacts =
+    suspend fun getContactsWithGroupsById(id: Long): GroupWithContacts =
         withContext(io) {
             crossRefDao.getGroupWithContactsById(id)
         }
